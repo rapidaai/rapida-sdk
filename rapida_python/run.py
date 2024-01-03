@@ -1,6 +1,6 @@
 import os
 
-from rapida_sdk import Rapida, RapidaClientOptions
+from rapida import Rapida, RapidaClientOptions
 
 api_key = os.environ.get("RAPIDA_API_KEY", "__KEY__")
 
