@@ -2,7 +2,7 @@ import os
 
 from rapida_sdk.exceptions import RapidaInvalidAPIException
 
-from .api_resources.deployments import Deployments
+from .api_resources.deployments import RapidaData
 from .options import RapidaClientOptions
 
 
@@ -26,4 +26,4 @@ class Rapida:
         if api_key is None or len(api_key) == 0:
             raise RapidaInvalidAPIException("The provided API key is invalid.")
 
-        self.deployments = Deployments(options=options)
+        self.rapida_instances = RapidaData(options=options)

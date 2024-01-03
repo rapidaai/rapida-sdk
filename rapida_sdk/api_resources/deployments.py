@@ -275,7 +275,7 @@ class DeploymentConfig(BaseDeployment):
         return deployment_dict
 
 
-class Deployments:
+class RapidaData:
     body_params = {}
     update_params = {}
 
