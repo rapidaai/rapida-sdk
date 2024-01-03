@@ -1,6 +1,6 @@
 import os
 
-from rapida_sdk.exceptions import RapidaInvalidAPIException
+from rapida.exceptions import RapidaInvalidAPIException
 
 from .api_resources.deployments import RapidaData
 from .options import RapidaClientOptions

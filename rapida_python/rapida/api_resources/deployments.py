@@ -2,10 +2,10 @@ from typing import Any, Dict, Optional
 
 from requests import RequestException
 
-from rapida_sdk.exceptions import handle_request_exception
-from rapida_sdk.http_client import post
-from rapida_sdk.options import RapidaClientOptions
-from rapida_sdk.util import extract_json
+from rapida.exceptions import handle_request_exception
+from rapida.http_client import post
+from rapida.options import RapidaClientOptions
+from rapida.util import extract_json
 
 DEPLOYMENTS_API = "https://api.rapida.cloud/v2/deployments"
 
