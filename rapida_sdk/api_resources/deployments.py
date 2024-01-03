@@ -11,6 +11,7 @@ DEPLOYMENTS_API = "https://api.rapida.cloud/v2/deployments"
 
 # GET_CONFIG_URL = "{}/get_config".format(DEPLOYMENTS_API)
 INVOKE_URL = "{}/invoke".format(DEPLOYMENTS_API)
+FEEDBACK_URL = "{}/update".format(DEPLOYMENTS_API)
 
 from typing import Optional, TypedDict
 
@@ -276,6 +277,7 @@ class DeploymentConfig(BaseDeployment):
 
 class Deployments:
     body_params = {}
+    update_params = {}
 
     def __init__(self, options: RapidaClientOptions):
         self.options = options
@@ -418,3 +420,106 @@ class Deployments:
                 if data:
                     for item in data:
                         yield Deployment(options=self.options, **item)
+
+
+    def update(self, rapida_audit_id:str, feedback:int, metadata=None):
+            """
+            Invokes a audit update with the specified key.
+
+            Args:
+                :param rapida_audit_id (str): The rapida_audit_id key.
+                :param feedback (int): The feedback value.
+                :param metadata (dict, optional): Additional metadata to include with the invocation. Defaults to None.
+
+            Returns:
+                `Deployment`: The invoked deployment.
+
+            Raises:
+                `RequestException`: If the invocation request fails.
+            """
+            
+
+            if rapida_audit_id is not None:
+                self.update_params["rapida_audit_id"] = rapida_audit_id
+            
+            if feedback is None:
+                raise Exception(
+                    "The feedback value is required. Please provide a value key."
+                )
+            if not feedback in range(0, 5):
+                raise Exception(
+                    "The feedback value is between 0-5."
+                )
+            
+            if feedback is not None:
+                self.update_params["feedback"] = feedback
+
+
+            response = post(
+                url=FEEDBACK_URL,
+                api_key=self.options.api_key,
+                body=self.update_params,
+                environment=self.options.environment,
+            )
+
+            if response.ok is None or response.status_code != 200:
+                handle_request_exception(response)
+
+            params = response.json()
+
+            return Deployment(options=self.options, **params)
+
+
+    def update_with_stream(self, rapida_audit_id:str, feedback:int, metadata=None):
+            """
+            Invokes a audit update with the specified key.
+
+            Args:
+                :param rapida_audit_id (str): The rapida_audit_id key.
+                :param feedback (int): The feedback value.
+                :param metadata (dict, optional): Additional metadata to include with the invocation. Defaults to None.
+
+            Returns:
+                `Deployment`: The invoked deployment.
+
+            Raises:
+                `RequestException`: If the invocation request fails.
+            """
+            
+
+            if rapida_audit_id is not None:
+                self.update_params["rapida_audit_id"] = rapida_audit_id
+            
+            if feedback is None:
+                raise Exception(
+                    "The feedback value is required. Please provide a value key."
+                )
+            if not feedback in range(0, 5):
+                raise Exception(
+                    "The feedback value is between 0-5."
+                )
+            
+            if feedback is not None:
+                self.update_params["feedback"] = feedback
+
+
+            response = post(
+                url=FEEDBACK_URL,
+                api_key=self.options.api_key,
+                body=self.body_params,
+                stream=True,
+                environment=self.options.environment,
+            )
+
+            if response.ok is None or response.status_code != 200:
+                handle_request_exception(response)
+
+            for line in response.iter_lines():
+                if line:
+                    data = extract_json(line)
+
+                    if data:
+                        for item in data:
+                            yield Deployment(options=self.options, **item)
+
+

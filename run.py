@@ -21,6 +21,17 @@ response = client.deployments.invoke(
     metadata={"request_id": "Qwtqwty90281", "batch_id":"XXXXXXXXX"},
 )
 
-# print(deployment.choices[0].message.content)
+# rapida_audit_id = response.choices[0].message.content
+
+response = client.deployments.update(
+    rapida_audit_id="xxxxxxxxxxxxxxxxxx",
+    feedback=5,
+    metadata={"request_id": "Qwtqwty90281", "batch_id":"XXXXXXXXX"},
+)
+
+
+
+
+# 
 
 
