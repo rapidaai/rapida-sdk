@@ -16,7 +16,6 @@ response = client.deployments.invoke(
     model="gpt-4.0",
     retry_count=2,
     cache=False,
-    webhook_url="http://localhost:5000/webhook",
     context={"environments": "production", "country": "NLD"},
     inputs={"firstname": "John", "city": "New York"}, # template parameters
     metadata={"request_id": "Qwtqwty90281", "batch_id":"XXXXXXXXX"},
