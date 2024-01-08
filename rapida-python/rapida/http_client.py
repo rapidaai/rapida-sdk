@@ -10,11 +10,11 @@ from .version import VERSION
 
 def post(url: str, api_key: str, body: dict, stream=False, environment=None):
     headers = {
-        "X-SDK-Version": "@rapida/python@{}".format(VERSION),
+        "X-SDK-Version": f"@rapida/python@{VERSION}",
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "User-Agent": "rapida/{};python".format(VERSION),
+        "User-Agent": f"rapida/{VERSION};python",
     }
 
     if environment:

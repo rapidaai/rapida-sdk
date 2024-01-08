@@ -1,12 +1,3 @@
-from requests import Response
-
-
-class RapidaInvalidAPIException(BaseException):
-    """Raised if the provider API key is invalid."""
-
-    pass
-
-
 class RapidaException(Exception):
     """Exception raised for errors when interacting with deployments.
 
@@ -41,12 +32,23 @@ class RapidaException(Exception):
         return f"[{self.source}] - [code:{self.code}]: {self.message}"
 
 
+class RapidaConfigurationException(RapidaException):
+    """
+    An error caused by client or server configuration
+    """
+
+    pass
+
+
+class RapidaInternalServerException(RapidaException):
+    """An error caused by uncontrolled server response"""
+
+    pass
+
+
 def handle_request_exception(response: Response):
     try:
         error_json = response.json()
-
-        print(error_json)
-
         raise RapidaException(
             code=error_json.get("code", None),
             message=error_json.get("error", None),
