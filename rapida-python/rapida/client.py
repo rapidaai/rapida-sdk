@@ -8,10 +8,10 @@ from .options import RapidaClientOptions
 
 class Rapida:
     """
-    Represents an Rapida client.
+    Represents an RapidaAI client.
 
     Args:
-        options (RapidaClientOptions): The options for the Rapida client.
+        options (RapidaClientOptions): The options for the RapidaAI client.
 
     Attributes:
         deployments (Deployments): An instance of the Deployments class.

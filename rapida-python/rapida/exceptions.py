@@ -56,7 +56,7 @@ def handle_request_exception(response: Response):
         )
     except ValueError:
         raise RapidaException(
-            code=None,
+            code="unknown",
             message="An unknown error occurred.",
             source="unknown",
         )

@@ -5,11 +5,11 @@ from rapida.http_client import post
 from rapida.options import RapidaClientOptions
 from rapida.util import extract_json
 
-DEPLOYMENTS_API = "https://api.rapida.cloud/v2/deployments"
-
-# GET_CONFIG_URL = "{}/get_config".format(DEPLOYMENTS_API)
-INVOKE_URL = f"{DEPLOYMENTS_API}/invoke"
-FEEDBACK_URL = f"{DEPLOYMENTS_API}/update"
+# DEPLOYMENTS_API = "https://api.rapida.cloud/v2/deployments"
+#
+# # GET_CONFIG_URL = "{}/get_config".format(DEPLOYMENTS_API)
+# INVOKE_URL = f"{DEPLOYMENTS_API}/invoke"
+# FEEDBACK_URL = f"{DEPLOYMENTS_API}/update"
 
 from typing import Optional, TypedDict
 
