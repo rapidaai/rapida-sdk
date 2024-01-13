@@ -10,6 +10,8 @@ grpcio = "1.47.0"
 protobuf = "3.20.1"
 types-protobuf = "3.19.22"
 pydantic = "1.9.1"
+install = "*"
+grpcio-tools = "*"
 
 [dev-packages]
 pylint = "2.13.9"
