@@ -1,7 +1,7 @@
 import json
 from typing import Any, List, Dict
 
-from .exceptions import RapidaException
+from rapida.exceptions.exceptions import RapidaException
 
 
 def dict_cleanup(input_dict):
