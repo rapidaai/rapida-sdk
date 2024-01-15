@@ -1,2 +1,3 @@
-from .client import Rapida
-from .options import RapidaClientOptions
+from rapida.client.client import Rapida
+from rapida.options import RapidaClientOptions
+from rapida.exceptions.exceptions import RapidaException
