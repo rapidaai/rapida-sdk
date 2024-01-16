@@ -58,6 +58,6 @@ message ProbeResponse {
 
 service Deployment {
     rpc Invoke(InvokeRequest) returns (InvokeResponse);
-    rpc Update(UpdateRequest) returns (UpdateResponse);
+    rpc UpdateMetadata(UpdateRequest) returns (UpdateResponse);
     rpc Probe(ProbeRequest) returns (ProbeResponse);
 }

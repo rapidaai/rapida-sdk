@@ -73,7 +73,7 @@ class RapidaData:
 
         return response
 
-    async def update(self, rapida_audit_id: int, rapida_metadata: dict):
+    async def update_metadata(self, rapida_audit_id: int, rapida_metadata: dict):
         """
         Invokes a audit update with the specified key.
 

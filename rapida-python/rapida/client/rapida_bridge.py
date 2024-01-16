@@ -82,7 +82,7 @@ class RapidaBridge(GRPCBridge):
 
         response = await cls.fetch(
             stub= invoker_api_pb2_grpc.DeploymentStub,
-            attr="Update",
+            attr="UpdateMetadata",
             message_type = invoker_api_pb2.UpdateRequest(
                 requestId=rapida_audit_id,
                 metadata=a,
