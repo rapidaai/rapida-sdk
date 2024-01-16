@@ -88,9 +88,9 @@ class GRPCBridge(ABC):
                 # metadata for request
                 _metadata: Metadata = Metadata()
 
-                # _metadata.add('X-API-Key', cls.rapida_api_key)
-                # _metadata.add('X-Rapida-Environment', cls.rapida_environment)
-                # _metadata.add('X-Rapida-Region', cls.rapida_region)
+                _metadata.add('X-API-Key', cls.rapida_api_key)
+                _metadata.add('X-Rapida-Environment', cls.rapida_environment)
+                _metadata.add('X-Rapida-Region', cls.rapida_region)
 
                 print(_metadata)
 
