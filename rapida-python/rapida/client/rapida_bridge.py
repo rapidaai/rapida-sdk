@@ -4,7 +4,15 @@ author: prashant.srivastav
 
 # from typing import Union
 
+from typing import Any, Dict, List
 from google.protobuf.struct_pb2 import Struct
+from google.protobuf.any_pb2 import Any as ProtoAny
+from google.protobuf.json_format import Parse
+
+import ipdb
+
+from google.protobuf.internal import containers as _containers
+
 from google.protobuf.json_format import ParseDict
 from rapida.artifacts.protos.endpoint_service import (
     invoker_api_pb2,
@@ -21,35 +29,62 @@ class RapidaBridge(GRPCBridge):
         super().__init__(service_url)
 
     @classmethod
-    async def make_call(cls, method_name: str, endpointId: int, version: str, body_params: dict, options: dict[str, str]):
-        """
-        :param method_name: ["Invoke", "Probe"]
-        """
-        if method_name not in ["Invoke", "Probe"]:
-            raise RapidaException(
-                    code=500,
-                    message="Unimplemented method",
-                    source="",
-                )
-
+    async def make_invoke_call(cls, endpointId: int, version: str, body_params: Dict, metadata: Dict, options: Dict):
         a:Struct = Struct()
         a.update(body_params)
 
+        b:Struct = Struct()
+        b.update(metadata)
+
+        c:Struct = Struct()
+        c.update(options)
+
         response = await cls.fetch(
             stub= invoker_api_pb2_grpc.DeploymentStub,
-            attr= method_name,
-            message_type= invoker_api_pb2.InvokeRequest(
-                endpoint= invoker_api_pb2.EndpointDefnition(
-                    endpointId= endpointId,
-                    version= version
+            attr="Invoke",
+            message_type = invoker_api_pb2.InvokeRequest(
+                endpoint=invoker_api_pb2.EndpointDefinition(
+                    endpointId=endpointId,
+                    version=version
                 ),
-                args= a,
-                options= options,
+                args=a,
+                metadata=b,
+                options=c,
             ),
             preserving_proto_field_name=True,
             # including_default_value_fields=True,
         )
 
-        message = ParseDict(response, invoker_api_pb2.InvokeResponse())
-        print(message)
+        return ParseDict(response, invoker_api_pb2.InvokeResponse())
 
+    async def make_probe_call(cls, requestId:int):
+
+        response = await cls.fetch(
+            stub= invoker_api_pb2_grpc.DeploymentStub,
+            attr="Probe",
+            message_type = invoker_api_pb2.ProbeRequest(
+                requestId=requestId
+            ),
+            preserving_proto_field_name=True,
+            # including_default_value_fields=True,
+        )
+
+        return ParseDict(response, invoker_api_pb2.ProbeResponse())
+
+
+    async def make_update_call(cls, rapida_audit_id:int, rapida_metadata: Dict):
+        a:Struct = Struct()
+        a.update(rapida_metadata)
+
+        response = await cls.fetch(
+            stub= invoker_api_pb2_grpc.DeploymentStub,
+            attr="Update",
+            message_type = invoker_api_pb2.UpdateRequest(
+                requestId=rapida_audit_id,
+                metadata=a,
+            ),
+            preserving_proto_field_name=True,
+            # including_default_value_fields=True,
+        )
+
+        return ParseDict(response, invoker_api_pb2.UpdateResponse())
