@@ -2,7 +2,7 @@ from typing import Any, Dict, Optional
 
 import asyncio
 
-from rapida.options import RapidaClientOptions
+from rapida.client_options import RapidaClientOptions
 from rapida.exceptions.exceptions import RapidaException, handle_request_exception
 from rapida.client.rapida_bridge import RapidaBridge
 from typing import Any, Dict
@@ -10,13 +10,9 @@ from typing import Any, Dict
 
 class RapidaData:
 
-    # body_params = {}
-    # update_params = {}
-    # metadata_params = {}
-    # override_params = {}
-
-    def __init__(self, options: RapidaClientOptions):
+    def __init__(self, options: RapidaClientOptions, rapida_bridge: RapidaBridge):
         self.options = options
+        self.rapida_bridge = rapida_bridge
 
     def __validate_endpoint_params(
             self,
@@ -29,22 +25,17 @@ class RapidaData:
                 "The endpoint key is required. Please provide a endpoint key.",
             )
 
-        # self.metadata_params["rapida_endpoint"] = rapida_endpoint
-
         if rapida_endpoint_version is None:
             raise Warning(
                 "The version is required. Default latest will be used.",
             )
 
-        # self.metadata_params["rapida_endpoint_version"] = rapida_endpoint_version
-
         if rapida_environment is None:
             raise Warning(
                 "The environment is required. Default Test will be used.",
             )
-        # self.metadata_params["rapida_environment"] = rapida_environment
 
-    def invoke(
+    async def invoke(
             self,
             rapida_endpoint: int,
             rapida_endpoint_version: str,
@@ -73,17 +64,16 @@ class RapidaData:
                                         rapida_endpoint_version=rapida_endpoint_version,
                                         rapida_environment=rapida_environment)
 
-        response = asyncio.run(
-            RapidaBridge(self.options.rapida_endpoint_url).make_invoke_call(rapida_endpoint, rapida_endpoint_version,
-                                                                            rapida_inputs, rapida_metadata,
-                                                                            rapida_options))
+        response = await self.rapida_bridge.make_invoke_call(rapida_endpoint, rapida_endpoint_version,
+                                                rapida_inputs, rapida_metadata,
+                                                rapida_options)
 
         if response.ok is None or response.status_code != 200:
             handle_request_exception(response)
 
         return response
 
-    def update(self, rapida_audit_id: int, rapida_metadata: dict):
+    async def update(self, rapida_audit_id: int, rapida_metadata: dict):
         """
         Invokes a audit update with the specified key.
 
@@ -98,16 +88,15 @@ class RapidaData:
             `RequestException`: If the invocation request fails.
         """
 
-        response = asyncio.run(RapidaBridge(self.options.rapida_endpoint_url).make_update_call(rapida_audit_id, rapida_metadata))
+        response = await self.rapida_bridge.make_update_call(rapida_audit_id, rapida_metadata)
 
         if response.ok is None or response.status_code != 200:
             handle_request_exception(response)
 
         return response
 
-    def probe(self, rapida_audit_id: str):
-        response = asyncio.run(
-            RapidaBridge(self.options.rapida_endpoint_url).make_probe_call(rapida_audit_id))
+    async def probe(self, rapida_audit_id: str):
+        response = await self.rapida_bridge.make_probe_call(rapida_audit_id)
 
         if response.ok is None or response.status_code != 200:
             handle_request_exception(response)
