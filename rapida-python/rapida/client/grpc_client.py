@@ -36,12 +36,15 @@ class GRPCBridge(ABC):
     service_url: str
 
     @classmethod
-    def __init__(cls, service_url: str):
+    def __init__(cls, service_url: str, rapida_api_key: str, rapida_region: str, rapida_environment: str):
         """
         Initialize the GRPC bridge
         :param service_url:
         """
         cls.service_url = service_url
+        cls.rapida_api_key = rapida_api_key
+        cls.rapida_region = rapida_region
+        cls.rapida_environment = rapida_environment
 
     @classmethod
     async def fetch(
@@ -84,6 +87,16 @@ class GRPCBridge(ABC):
                 unary_unary: UnaryUnaryMultiCallable = getattr(stub(channel), attr)
                 # metadata for request
                 _metadata: Metadata = Metadata()
+
+                # _metadata.add('X-API-Key', cls.rapida_api_key)
+                # _metadata.add('X-Rapida-Environment', cls.rapida_environment)
+                # _metadata.add('X-Rapida-Region', cls.rapida_region)
+
+                print(_metadata)
+
+                # _metadata.add('X', cls.rap)
+                # _metadata.add('Authorization', cls.rapida_api_key)
+
                 # request executed with asynchronous invocation of a unary-call RPC.
                 results = await unary_unary(
                     request=message_type, metadata=_metadata

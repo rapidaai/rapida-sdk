@@ -2,8 +2,9 @@ import os
 
 from rapida.exceptions.exceptions import RapidaInvalidAPIException, RapidaConfigurationException
 
+from rapida.client.rapida_bridge import RapidaBridge
 from rapida.api_resources.deployments import RapidaData
-from rapida.options import RapidaClientOptions
+from rapida.client_options import RapidaClientOptions
 
 
 class Rapida:
@@ -27,9 +28,12 @@ class Rapida:
         endpoint_url = options.rapida_endpoint_url or os.environ.get("RAPIDA_ENDPOINT_URL")
 
         if api_key is None or len(api_key) == 0:
-            raise RapidaInvalidAPIException("The provided API key is invalid.")
+            raise RapidaConfigurationException("The provided API key is invalid.")
 
         if endpoint_url is None or len(endpoint_url) == 0:
             raise RapidaConfigurationException("The provided endpoint URL is invalid.")
 
-        self.rapida_instances = RapidaData(options=options)
+        self.rapida_instances = RapidaData(options=options, rapida_bridge=RapidaBridge(
+            service_url=endpoint_url, rapida_api_key=options.rapida_api_key, rapida_region=options.rapida_region, rapida_environment=options.rapida_environment))
+
+

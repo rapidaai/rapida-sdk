@@ -21,15 +21,19 @@ from rapida.artifacts.protos.endpoint_service import (
 from rapida.client.grpc_client import GRPCBridge
 from rapida.exceptions.exceptions import RapidaException
 
-
 class RapidaBridge(GRPCBridge):
 
     @classmethod
-    def __init__(cls, service_url: str):
-        super().__init__(service_url)
+    def __init__(cls, service_url: str, rapida_api_key:str, rapida_region:str, rapida_environment:str):
+        super().__init__(service_url, rapida_api_key, rapida_region, rapida_environment)
+
+    # rapida_api_key: str
+    # rapida_endpoint_url: str
+    # rapida_region: Union['ap', 'us', 'eu', 'any']
+    # rapida_environment: Optional[str]
 
     @classmethod
-    async def make_invoke_call(cls, endpointId: int, version: str, body_params: Dict, metadata: Dict, options: Dict):
+    async def make_invoke_call(cls, endpoint_id: int, version: str, body_params: Dict, metadata: Dict, options: Dict):
         a:Struct = Struct()
         a.update(body_params)
 
@@ -44,7 +48,7 @@ class RapidaBridge(GRPCBridge):
             attr="Invoke",
             message_type = invoker_api_pb2.InvokeRequest(
                 endpoint=invoker_api_pb2.EndpointDefinition(
-                    endpointId=endpointId,
+                    endpointId=endpoint_id,
                     version=version
                 ),
                 args=a,
