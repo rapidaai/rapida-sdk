@@ -4,22 +4,17 @@ author: prashant.srivastav
 
 # from typing import Union
 
-from typing import Any, Dict, List
-from google.protobuf.struct_pb2 import Struct
-from google.protobuf.any_pb2 import Any as ProtoAny
-from google.protobuf.json_format import Parse
-
-import ipdb
-
-from google.protobuf.internal import containers as _containers
+from typing import Dict
 
 from google.protobuf.json_format import ParseDict
+from google.protobuf.struct_pb2 import Struct
+
 from rapida.artifacts.protos.endpoint_service import (
     invoker_api_pb2,
     invoker_api_pb2_grpc
 )
 from rapida.client.grpc_client import GRPCBridge
-from rapida.exceptions.exceptions import RapidaException
+
 
 class RapidaBridge(GRPCBridge):
 

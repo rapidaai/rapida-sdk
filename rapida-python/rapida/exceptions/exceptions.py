@@ -1,5 +1,6 @@
-from requests import Response
 import logging
+
+from requests import Response
 
 _log = logging.getLogger("rapida.logger")
 

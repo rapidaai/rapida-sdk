@@ -1,11 +1,8 @@
-from typing import Any, Dict, Optional
-
-import asyncio
-
-from rapida.client_options import RapidaClientOptions
-from rapida.exceptions.exceptions import RapidaException, handle_request_exception
-from rapida.client.rapida_bridge import RapidaBridge
 from typing import Any, Dict
+
+from rapida.client.rapida_bridge import RapidaBridge
+from rapida.client_options import RapidaClientOptions
+from rapida.exceptions.exceptions import handle_request_exception
 
 
 class RapidaData:
