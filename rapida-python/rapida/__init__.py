@@ -3,14 +3,13 @@ author: prashant.srivastav
 """
 
 from rapida.rapida_client import RapidaClient
-from rapida.rapida_client_options import RapidaClientOptions
+from rapida.rapida_client_options import RapidaClientOptions, RapidaEnvironment, RapidaRegion
 from rapida.exceptions import (
     RapidaException,
     RapidaInternalServerException,
     RapidaInvalidAPIException,
     RapidaConfigurationException,
 )
-
 from rapida.version import VERSION
 
 __all__ = [
@@ -21,4 +20,6 @@ __all__ = [
     "RapidaInvalidAPIException",
     "RapidaConfigurationException",
     "VERSION",
+    "RapidaEnvironment",
+    "RapidaRegion"
 ]

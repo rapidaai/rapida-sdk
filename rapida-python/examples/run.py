@@ -3,16 +3,16 @@ import os
 import sys
 
 sys.path.append("..")
-from rapida import RapidaClient, RapidaClientOptions, RapidaException
+from rapida import RapidaClient, RapidaClientOptions, RapidaException, RapidaEnvironment
 
 rapida_api_key = os.environ.get("RAPIDA_API_KEY", "SEXj82nubm950fS9qdidwYHkKvuUVP8T")
 rapida_endpoint_url = os.environ.get("RAPIDA_ENDPOINT_URL", "localhost:9005")
 
 # init rapida client with options
 options = RapidaClientOptions(
-    rapida_api_key=rapida_api_key,
-    rapida_endpoint_url=rapida_endpoint_url,
-    rapida_environment="production",
+    api_key=rapida_api_key,
+    endpoint_url=rapida_endpoint_url,
+    environment=RapidaEnvironment.PRODUCTION
 )
 
 client = RapidaClient(options)
@@ -21,12 +21,11 @@ client = RapidaClient(options)
 async def all_example():
     try:
         response = await client.invoke(
-            rapida_endpoint=747474747474,
-            rapida_endpoint_version="1.0",
-            rapida_environment="Production",
-            rapida_inputs={"firstname": "John", "city": "New York"},
-            rapida_metadata={"request_id": "Qwtqwty90281", "batch_id": "XXXXXXXXX"},
-            rapida_options={
+            endpoint=747474747474,
+            endpoint_version="1.0",
+            inputs={"firstname": "John", "city": "New York"},
+            metadata={"request_id": "Qwtqwty90281", "batch_id": "XXXXXXXXX"},
+            options={
                 "cache": False,
                 "retry_count": 2,
             },  # {'cache':False, 'retry_count':2}
