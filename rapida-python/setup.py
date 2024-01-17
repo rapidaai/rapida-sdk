@@ -27,7 +27,7 @@ setup(
     version=VERSION["VERSION"],
     author_email="code@rapida.ai",
     description="rapidaAi sdk to integrate rapida.ai api's",
-    long_description="\n\n".join((read("README.adoc"), read("CHANGELOG.adoc"))),
+    long_description="\n\n".join(read("README.md")),
     long_description_content_type="text/markdown",
     classifiers=classifiers,
     platforms=["POSIX"],

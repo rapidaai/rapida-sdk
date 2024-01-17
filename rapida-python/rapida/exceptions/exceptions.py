@@ -1,8 +1,7 @@
 import logging
+from rapida.artifacts.protos.endpoint_service.invoker_api_pb2 import InvokerError
 
-from requests import Response
-
-_log = logging.getLogger("rapida.logger")
+_log = logging.getLogger("rapida.exceptions")
 
 
 class RapidaException(Exception):
@@ -14,7 +13,7 @@ class RapidaException(Exception):
         source (str): The source of the error. If the source is `provider`, the error is raised by the model provider.
     """
 
-    def __init__(self, code: str, message: str, source: str):
+    def __init__(self, code: int, message: str, source: str):
         """
         Initialize a new instance of the Exception class.
 
@@ -59,17 +58,25 @@ class RapidaInvalidAPIException(RapidaException):
     pass
 
 
-def handle_request_exception(response: Response):
+def handle_request_exception(error: InvokerError):
+    """
+
+    Args:
+        error: error returned by invoker that represent what really went wrong.
+
+    Returns: an instance of exception class
+
+    """
     try:
-        error_json = response.json()
+        # error_json = response.json()
         raise RapidaException(
-            code=error_json.get("code", None),
-            message=error_json.get("error", None),
-            source=error_json.get("source", None),
+            code=error.errorCode,
+            message=error.humanMessage,
+            source=error.errorMessage,
         )
     except ValueError:
         raise RapidaException(
-            code="unknown",
+            code=500,
             message="An unknown error occurred.",
             source="unknown",
         )
