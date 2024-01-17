@@ -2,6 +2,7 @@ import requests
 
 from rapida.version import VERSION
 
+
 # PROMPTS_API = "https://api.rapida.cloud/v1/prompts"
 # REMOTE_CONFIGS_API = "https://api.rapida.cloud/v1/remoteconfigs"
 # ENDPOINTS_API = "https://api.rapida.cloud/v1/endpoints"
