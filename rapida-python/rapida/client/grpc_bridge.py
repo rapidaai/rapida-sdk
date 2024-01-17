@@ -14,6 +14,7 @@ from abc import ABC
 from typing import Any, Dict
 
 from google.protobuf.json_format import MessageToDict
+from google.protobuf.message import Message
 from google.protobuf.reflection import GeneratedProtocolMessageType
 from grpc import aio as grpc_aio
 from grpc.aio import Metadata
@@ -21,7 +22,7 @@ from grpc.aio._channel import UnaryUnaryMultiCallable
 
 from rapida.exceptions.exceptions import RapidaException
 
-_log = logging.getLogger('rapida.grpc_client')
+_log = logging.getLogger("rapida.client.grpc_bridge")
 
 
 # _log = logging.getLogger("bridges.grpc_bridge")
@@ -34,12 +35,24 @@ class GRPCBridge(ABC):
 
     # base url as hosts
     service_url: str
+    rapida_api_key: str
+    rapida_region: str
+    rapida_environment: str
 
     @classmethod
-    def __init__(cls, service_url: str, rapida_api_key: str, rapida_region: str, rapida_environment: str):
+    def __init__(
+        cls,
+        service_url: str,
+        rapida_api_key: str,
+        rapida_region: str,
+        rapida_environment: str,
+    ):
         """
-        Initialize the GRPC bridge
-        :param service_url:
+        Args:
+            service_url: a url where the endpoint service is deployed
+            rapida_api_key: a api keys to authenticate and authorize the request made to rapida servers (Please find the docs <a>docs.rapida.ai</a>
+            rapida_region: specify the region to accelerate the request if it's specific as per client need
+            rapida_environment: a tag to represent the env currently (production and development is supported)
         """
         cls.service_url = service_url
         cls.rapida_api_key = rapida_api_key
@@ -51,7 +64,7 @@ class GRPCBridge(ABC):
         cls,
         stub: Any,
         attr: str,
-        message_type: GeneratedProtocolMessageType,
+        message_type: Message,
         **unmarshal_options,
     ) -> Dict[str, Any]:
         """
@@ -79,23 +92,19 @@ class GRPCBridge(ABC):
             _log.debug(f"grpc_bridge: in span of {attr}")
 
             async with grpc_aio.insecure_channel(cls.service_url) as channel:
-                _log.debug(
-                    f"grpc_bridge: created secure channel for {cls.service_url}"
-                )
+                _log.debug(f"grpc_bridge: created secure channel for {cls.service_url}")
 
                 # get attribute from stub
                 unary_unary: UnaryUnaryMultiCallable = getattr(stub(channel), attr)
                 # metadata for request
                 _metadata: Metadata = Metadata()
 
-                # _metadata.add('X-API-Key', cls.rapida_api_key)
-                # _metadata.add('X-Rapida-Environment', cls.rapida_environment)
-                # _metadata.add('X-Rapida-Region', cls.rapida_region)
+                _metadata.add("x-api-key", cls.rapida_api_key)
+                _metadata.add("x-rapida-environment", cls.rapida_environment)
+                _metadata.add("x-rapida-region", cls.rapida_region)
 
                 # request executed with asynchronous invocation of a unary-call RPC.
-                results = await unary_unary(
-                    request=message_type, metadata=_metadata
-                )
+                results = await unary_unary(request=message_type, metadata=_metadata)
                 # parsing result and unmarshalling the result with given options
                 json_result = MessageToDict(results, **unmarshal_options)
                 _log.info(
@@ -107,6 +116,4 @@ class GRPCBridge(ABC):
             _log.error(
                 f"{cls.__qualname__} {attr} [status:NOT_OK request:{time.time() - started_request}s]"
             )
-            raise RapidaException(
-                message=str(ex),code=500, source=__name__
-            )
+            raise RapidaException(message=str(ex), code=500, source=__name__)

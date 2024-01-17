@@ -16,21 +16,21 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-*/env/
-*/build/
-*/develop-eggs/
-*/dist/
-*/downloads/
-*/eggs/
-*/.eggs/
-*/lib/
-*/lib64/
-*/parts/
-*/sdist/
-*/var/
-*/*.egg-info/
-*/.installed.cfg
-*/*.egg
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -67,15 +67,14 @@ docs/_build/
 target/
 
 # OSX Stuff
-*/.DS_Store
+.DS_Store
 
-# Pycharm
-rapida-python/.idea/*
+# IntelliJ/Pycharm
+.idea/
 
 # MyPY
-rapida-python/.mypy_cache/
+.mypy_cache/
 
 #dev requirment files
-rapida-python/requirements-dev.txt
-
+requirements-dev.txt
 
