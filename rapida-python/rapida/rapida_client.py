@@ -6,6 +6,7 @@ from rapida.rapida_client_options import RapidaClientOptions
 from rapida.exceptions import RapidaException
 from rapida.exceptions.exceptions import handle_request_exception
 from rapida.exceptions.exceptions import RapidaConfigurationException
+import warnings
 
 
 class RapidaClient:
@@ -35,15 +36,14 @@ class RapidaClient:
         self.rapida_bridge = RapidaBridge(
             service_url=options.rapida_endpoint_url,
             rapida_api_key=options.rapida_api_key,
-            rapida_region=options.rapida_region,
-            rapida_environment=options.rapida_environment,
+            rapida_region=options.rapida_region.get(),
+            rapida_environment=options.rapida_environment.get(),
         )
 
     def __validate_endpoint_params(
-        self,
-        rapida_endpoint: int,
-        rapida_endpoint_version: str,
-        rapida_environment: str,
+            self,
+            rapida_endpoint: int,
+            rapida_endpoint_version: str,
     ) -> None:
         if rapida_endpoint is None:
             raise Exception(
@@ -51,34 +51,27 @@ class RapidaClient:
             )
 
         if rapida_endpoint_version is None:
-            raise Warning(
+            warnings.warn(
                 "The version is required. Default latest will be used.",
             )
 
-        if rapida_environment is None:
-            raise Warning(
-                "The environment is required. Default Test will be used.",
-            )
-
     async def invoke(
-        self,
-        rapida_endpoint: int,
-        rapida_endpoint_version: str,
-        rapida_environment: str,
-        rapida_inputs: Dict[str, str],
-        rapida_metadata: Dict[str, str],
-        rapida_options: Dict[str, Any],
+            self,
+            endpoint: int,
+            endpoint_version: str,
+            inputs: Dict[str, str],
+            metadata: Dict[str, str],
+            options: Dict[str, Any],
     ):
         """
         Invokes a deployment with the specified key.
 
         Args:
-            rapida_environment: Environment to run
-            rapida_inputs: Dictionary of input parameters for the prompts
-            rapida_metadata: Dictionary of metadata for the current execution
-            rapida_options: Dictionary of options for the override parameters for the model
-            rapida_endpoint (int): The endpoint key.
-            rapida_endpoint_version (str): The endpoint version.
+            inputs: Dictionary of input parameters for the prompts
+            metadata: Dictionary of metadata for the current execution
+            options: Dictionary of options for the override parameters for the model
+            endpoint (int): The endpoint key.
+            endpoint_version (str): The endpoint version.
         Returns:
             `Deployment`: The invoked deployment.
 
@@ -86,17 +79,16 @@ class RapidaClient:
             `RequestException`: If the invocation request fails.
         """
         self.__validate_endpoint_params(
-            rapida_endpoint=rapida_endpoint,
-            rapida_endpoint_version=rapida_endpoint_version,
-            rapida_environment=rapida_environment,
+            rapida_endpoint=endpoint,
+            rapida_endpoint_version=endpoint_version,
         )
 
         response = await self.rapida_bridge.make_invoke_call(
-            rapida_endpoint,
-            rapida_endpoint_version,
-            rapida_inputs,
-            rapida_metadata,
-            rapida_options,
+            endpoint,
+            endpoint_version,
+            inputs,
+            metadata,
+            options,
         )
 
         if response.success:
