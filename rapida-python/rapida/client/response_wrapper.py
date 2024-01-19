@@ -27,11 +27,17 @@ class InvokeResponseWrapper:
             return 0
         return self.data.timeTaken
 
+    def request_id(self) -> int:
+        return self.data.requestId
+
     def to_json(self) -> json:
-        return MessageToJson(self.data)
+        return self.data.response
 
     def to_dict(self) -> Dict:
-        return MessageToDict(self.data)
+        data = MessageToDict(self.data)
+        if "response" in data:
+            return json.loads(data["response"])
+        return data
 
     def get_code(self):
         return self.code
