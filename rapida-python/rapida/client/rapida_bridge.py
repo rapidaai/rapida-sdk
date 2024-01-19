@@ -2,8 +2,8 @@
 author: prashant.srivastav
 """
 import logging
-from typing import Dict, Optional
-
+from typing import Dict, Optional, Any
+from google.protobuf import any_pb2
 from google.protobuf.json_format import ParseDict
 from google.protobuf.struct_pb2 import Struct
 
@@ -38,9 +38,9 @@ class RapidaBridge(GRPCBridge):
         self,
         endpoint_id: int,
         version: str,
-        body_params: Dict,
-        metadata: Optional[Dict],
-        override_options: Optional[Dict],
+        body_params: Dict[str, str],
+        metadata: Optional[Dict[str, str]],
+        override_options: Optional[Dict[str, str]],
     ) -> invoker_api_pb2.InvokeResponse:
         """
         Endpoint request to the rapida api endpoint servers
@@ -54,17 +54,6 @@ class RapidaBridge(GRPCBridge):
         Returns:
 
         """
-        _args: Struct = Struct()
-        _args.update(body_params)
-
-        _metadata: Struct = Struct()
-        if metadata:
-            _metadata.update(metadata)
-
-        _override_options: Struct = Struct()
-        if _override_options:
-            _override_options.update(override_options)
-
         response = await self.fetch(
             stub=invoker_api_pb2_grpc.DeploymentStub,
             attr="Invoke",
@@ -72,9 +61,9 @@ class RapidaBridge(GRPCBridge):
                 endpoint=invoker_api_pb2.EndpointDefinition(
                     endpointId=endpoint_id, version=version
                 ),
-                args=_args,
-                metadata=_metadata,
-                options=_override_options,
+                args=body_params,
+                metadata=metadata,
+                options=override_options,
             ),
             preserving_proto_field_name=True,
             # including_default_value_fields=True,

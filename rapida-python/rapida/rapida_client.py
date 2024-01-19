@@ -42,8 +42,8 @@ class RapidaClient:
 
     def _endpoint_params(
             self,
-            endpoint: Tuple[str, Union[str, None]],
-    ) -> Tuple[str, str]:
+            endpoint: Tuple[int, Union[str, None]],
+    ) -> Tuple[int, str]:
         rapida_endpoint, rapida_endpoint_version = endpoint
         if rapida_endpoint is None:
             raise Exception(
@@ -56,6 +56,23 @@ class RapidaClient:
             )
             return rapida_endpoint, "latest"
         return rapida_endpoint, rapida_endpoint_version
+
+    def _options(self, options: Dict[str, Any]) -> Dict[str, str]:
+
+        """
+
+        Args:
+            options:
+
+        Returns:
+
+        """
+        allowed_options = ["cache", "retry_count"]
+        _extras: Dict[str, str] = {}
+        for key, value in options.items():
+            if key in allowed_options:
+                _extras[key] = str(value)
+        return _extras
 
     async def invoke(
             self,
@@ -81,6 +98,8 @@ class RapidaClient:
         endpoint_id, endpoint_version = self._endpoint_params(
             endpoint
         )
+
+        options: Dict[str, str] = self._options(options)
 
         response = await self.rapida_bridge.make_invoke_call(
             endpoint_id,
