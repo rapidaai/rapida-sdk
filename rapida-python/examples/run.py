@@ -19,8 +19,6 @@ client = RapidaClient(options)
 
 
 async def all_example():
-    ba: int = 2006367135982419547
-    print(ba)
     try:
         response = await client.invoke(
             endpoint=(2006367135982419547, "1.0"),
@@ -33,6 +31,10 @@ async def all_example():
         )
 
         print(response)
+        response.dict()
+        response.json()
+        response.get("")
+
     except RapidaException as ex:
         print(ex.message)
     #

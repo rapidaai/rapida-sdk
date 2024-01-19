@@ -2,12 +2,10 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from rapida.artifacts.protos.endpoint_service import (
-    invoker_api_pb2 as rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2,
-)
+from rapida.artifacts.protos.endpoint_service import invoker_api_pb2 as rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2
 
 
-class DeploymentStub:
+class DeploymentStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -17,155 +15,118 @@ class DeploymentStub:
             channel: A grpc.Channel.
         """
         self.Invoke = channel.unary_unary(
-            "/endpoint_api.Deployment/Invoke",
-            request_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.InvokeRequest.SerializeToString,
-            response_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.InvokeResponse.FromString,
-        )
-        self.UpdateMetadata = channel.unary_unary(
-            "/endpoint_api.Deployment/UpdateMetadata",
-            request_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.UpdateRequest.SerializeToString,
-            response_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.UpdateResponse.FromString,
-        )
+                '/endpoint_api.Deployment/Invoke',
+                request_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.InvokeRequest.SerializeToString,
+                response_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.InvokeResponse.FromString,
+                )
+        self.Update = channel.unary_unary(
+                '/endpoint_api.Deployment/Update',
+                request_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.UpdateRequest.SerializeToString,
+                response_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.UpdateResponse.FromString,
+                )
         self.Probe = channel.unary_unary(
-            "/endpoint_api.Deployment/Probe",
-            request_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.ProbeRequest.SerializeToString,
-            response_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.ProbeResponse.FromString,
-        )
+                '/endpoint_api.Deployment/Probe',
+                request_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.ProbeRequest.SerializeToString,
+                response_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.ProbeResponse.FromString,
+                )
 
 
-class DeploymentServicer:
+class DeploymentServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def Invoke(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-    def UpdateMetadata(self, request, context):
+    def Update(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def Probe(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
 
 def add_DeploymentServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        "Invoke": grpc.unary_unary_rpc_method_handler(
-            servicer.Invoke,
-            request_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.InvokeRequest.FromString,
-            response_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.InvokeResponse.SerializeToString,
-        ),
-        "UpdateMetadata": grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateMetadata,
-            request_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.UpdateRequest.FromString,
-            response_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.UpdateResponse.SerializeToString,
-        ),
-        "Probe": grpc.unary_unary_rpc_method_handler(
-            servicer.Probe,
-            request_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.ProbeRequest.FromString,
-            response_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.ProbeResponse.SerializeToString,
-        ),
+            'Invoke': grpc.unary_unary_rpc_method_handler(
+                    servicer.Invoke,
+                    request_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.InvokeRequest.FromString,
+                    response_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.InvokeResponse.SerializeToString,
+            ),
+            'Update': grpc.unary_unary_rpc_method_handler(
+                    servicer.Update,
+                    request_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.UpdateRequest.FromString,
+                    response_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.UpdateResponse.SerializeToString,
+            ),
+            'Probe': grpc.unary_unary_rpc_method_handler(
+                    servicer.Probe,
+                    request_deserializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.ProbeRequest.FromString,
+                    response_serializer=rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.ProbeResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "endpoint_api.Deployment", rpc_method_handlers
-    )
+            'endpoint_api.Deployment', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
-# This class is part of an EXPERIMENTAL API.
-class Deployment:
+ # This class is part of an EXPERIMENTAL API.
+class Deployment(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def Invoke(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def Invoke(request,
             target,
-            "/endpoint_api.Deployment/Invoke",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/endpoint_api.Deployment/Invoke',
             rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.InvokeRequest.SerializeToString,
             rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.InvokeResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def UpdateMetadata(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def Update(request,
             target,
-            "/endpoint_api.Deployment/UpdateMetadata",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/endpoint_api.Deployment/Update',
             rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.UpdateRequest.SerializeToString,
             rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.UpdateResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Probe(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def Probe(request,
             target,
-            "/endpoint_api.Deployment/Probe",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/endpoint_api.Deployment/Probe',
             rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.ProbeRequest.SerializeToString,
             rapida_dot_artifacts_dot_protos_dot_endpoint__service_dot_invoker__api__pb2.ProbeResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
