@@ -5,7 +5,7 @@ import sys
 sys.path.append("..")
 from rapida import RapidaClient, RapidaClientOptions, RapidaException, RapidaEnvironment
 
-rapida_api_key = os.environ.get("RAPIDA_API_KEY", "SEXj82nubm950fS9qdidwYHkKvuUVP8T")
+rapida_api_key = os.environ.get("RAPIDA_API_KEY", "73d3aa9e909f826e29cd698e416b3f0de7a72f7169ed1044f31f6971cc92dab6")
 rapida_endpoint_url = os.environ.get("RAPIDA_ENDPOINT_URL", "localhost:9005")
 
 # init rapida client with options
@@ -19,10 +19,11 @@ client = RapidaClient(options)
 
 
 async def all_example():
+    ba: int = 2006367135982419547
+    print(ba)
     try:
         response = await client.invoke(
-            endpoint=747474747474,
-            endpoint_version="1.0",
+            endpoint=(2006367135982419547, "1.0"),
             inputs={"firstname": "John", "city": "New York"},
             metadata={"request_id": "Qwtqwty90281", "batch_id": "XXXXXXXXX"},
             options={
@@ -36,22 +37,22 @@ async def all_example():
         print(ex.message)
     #
 
-    try:
-        response = await client.update_metadata(
-            rapida_audit_id=84848484848,
-            rapida_metadata={"request_id": "Qwtqwty90281", "batch_id": "XXXXXXXXX"},
-        )
-
-        print(response)
-    except RapidaException as ex:
-        print(ex.message)
-
-    try:
-        response = await client.probe(rapida_audit_id=84848484848)
-        print(response)
-    except RapidaException as ex:
-        print(ex.message)
-
+    # try:
+    #     response = await client.update_metadata(
+    #         rapida_audit_id=84848484848,
+    #         rapida_metadata={"request_id": "Qwtqwty90281", "batch_id": "XXXXXXXXX"},
+    #     )
+    #
+    #     print(response)
+    # except RapidaException as ex:
+    #     print(ex.message)
+    #
+    # try:
+    #     response = await client.probe(rapida_audit_id=84848484848)
+    #     print(response)
+    # except RapidaException as ex:
+    #     print(ex.message)
+    #
 
 if __name__ == "__main__":
     asyncio.run(all_example(), debug=True)
