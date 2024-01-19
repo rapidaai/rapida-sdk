@@ -59,7 +59,7 @@ class RapidaClient:
             return rapida_endpoint, "latest"
         return rapida_endpoint, rapida_endpoint_version
 
-    def _options(self, options: Dict[str, Any]) -> Dict[str, str]:
+    def _options(self, options: Optional[Dict[str, Any]]) -> Dict[str, str]:
 
         """
 
@@ -71,6 +71,10 @@ class RapidaClient:
         """
         allowed_options = ["cache", "retry_count"]
         _extras: Dict[str, str] = {}
+
+        if options is None:
+            return _extras
+
         for key, value in options.items():
             if key in allowed_options:
                 _extras[key] = str(value)
@@ -80,8 +84,8 @@ class RapidaClient:
             self,
             endpoint: Tuple[int, Union[str, None]],
             inputs: Dict[str, str],
-            metadata: Dict[str, str],
-            options: Dict[str, Any],
+            metadata: Optional[Dict[str, str]] = None,
+            options: Optional[Dict[str, Any]] = None,
     ) -> InvokeResponseWrapper:
         """
         Invokes a deployment with the specified key.
