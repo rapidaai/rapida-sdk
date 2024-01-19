@@ -1,4 +1,4 @@
-from typing import Any, Dict, Union, Optional
+from typing import Any, Dict, Union, Optional, Tuple
 
 from rapida.artifacts.protos.endpoint_service.invoker_api_pb2 import InvokerError
 from rapida.client.rapida_bridge import RapidaBridge
@@ -40,11 +40,11 @@ class RapidaClient:
             rapida_environment=options.rapida_environment.get(),
         )
 
-    def __validate_endpoint_params(
+    def _endpoint_params(
             self,
-            rapida_endpoint: int,
-            rapida_endpoint_version: str,
-    ) -> None:
+            endpoint: Tuple[str, Union[str, None]],
+    ) -> Tuple[str, str]:
+        rapida_endpoint, rapida_endpoint_version = endpoint
         if rapida_endpoint is None:
             raise Exception(
                 "The endpoint key is required. Please provide a endpoint key.",
@@ -54,11 +54,12 @@ class RapidaClient:
             warnings.warn(
                 "The version is required. Default latest will be used.",
             )
+            return rapida_endpoint, "latest"
+        return rapida_endpoint, rapida_endpoint_version
 
     async def invoke(
             self,
-            endpoint: int,
-            endpoint_version: str,
+            endpoint: Tuple[int, Union[str, None]],
             inputs: Dict[str, str],
             metadata: Dict[str, str],
             options: Dict[str, Any],
@@ -70,21 +71,19 @@ class RapidaClient:
             inputs: Dictionary of input parameters for the prompts
             metadata: Dictionary of metadata for the current execution
             options: Dictionary of options for the override parameters for the model
-            endpoint (int): The endpoint key.
-            endpoint_version (str): The endpoint version.
+            endpoint (int, str): The endpoint key.
         Returns:
             `Deployment`: The invoked deployment.
 
         Raises:
             `RequestException`: If the invocation request fails.
         """
-        self.__validate_endpoint_params(
-            rapida_endpoint=endpoint,
-            rapida_endpoint_version=endpoint_version,
+        endpoint_id, endpoint_version = self._endpoint_params(
+            endpoint
         )
 
         response = await self.rapida_bridge.make_invoke_call(
-            endpoint,
+            endpoint_id,
             endpoint_version,
             inputs,
             metadata,
