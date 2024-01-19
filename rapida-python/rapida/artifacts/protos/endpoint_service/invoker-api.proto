@@ -29,7 +29,7 @@ message InvokeRequest {
 message InvokeResponse {
     int32 code = 1;
     bool success = 2;
-    google.protobuf.Struct data = 3;
+    string response = 3;
     optional InvokerError error = 4;
 }
 
