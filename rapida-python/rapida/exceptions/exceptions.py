@@ -10,7 +10,8 @@ class RapidaException(Exception):
     Attributes:
         code (int): The error code returned by the API
         message (str): The error message returned by the API
-        source (str): The source of the error. If the source is `provider`, the error is raised by the model provider.
+        source (str): The source of the error. If the source is
+        `provider`, the error is raised by the model provider.
     """
 
     def __init__(self, code: int, message: str, source: str):
@@ -80,3 +81,17 @@ def handle_request_exception(error: InvokerError):
             message="An unknown error occurred.",
             source="unknown",
         )
+
+
+class RapidaWarning(Warning):
+    def __init__(self, message: str):
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        """
+        Returns a string representation of the exception.
+
+        Returns:
+            str: The formatted string representation of the exception.
+        """
+        return f"[{self.message}"

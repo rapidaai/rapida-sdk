@@ -2,10 +2,9 @@
 author: prashant.srivastav
 """
 import logging
-from typing import Dict, Optional, Any
-from google.protobuf import any_pb2
+from typing import Dict, Optional
 from google.protobuf.json_format import ParseDict
-from google.protobuf.struct_pb2 import Struct
+from rapida.client.response_wrapper import InvokeResponseWrapper
 
 from rapida.artifacts.protos.endpoint_service import (
     invoker_api_pb2,
@@ -69,7 +68,9 @@ class RapidaBridge(GRPCBridge):
             # including_default_value_fields=True,
         )
 
-        return ParseDict(response, invoker_api_pb2.InvokeResponse())
+        return InvokeResponseWrapper(
+            ParseDict(response, invoker_api_pb2.InvokeResponse())
+        )
 
     async def make_probe_call(
         self, rapida_audit_id: int
@@ -95,7 +96,7 @@ class RapidaBridge(GRPCBridge):
         )
 
     async def make_update_call(
-        self, rapida_audit_id: int, rapida_metadata: Dict
+        self, rapida_audit_id: int, rapida_metadata: Optional[Dict[str, str]]
     ) -> invoker_api_pb2.UpdateResponse:
         """
         Provide an interface to update the metadata for executed request
@@ -106,15 +107,12 @@ class RapidaBridge(GRPCBridge):
         Returns:
 
         """
-        _metadata: Struct = Struct()
-        _metadata.update(rapida_metadata)
-
         response = await self.fetch(
             stub=invoker_api_pb2_grpc.DeploymentStub,
             attr="UpdateMetadata",
             message_type=invoker_api_pb2.UpdateRequest(
                 requestId=rapida_audit_id,
-                metadata=_metadata,
+                metadata=rapida_metadata,
             ),
             preserving_proto_field_name=True,
             # including_default_value_fields=True,
