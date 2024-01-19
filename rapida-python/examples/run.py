@@ -6,13 +6,14 @@ sys.path.append("..")
 from rapida import RapidaClient, RapidaClientOptions, RapidaException, RapidaEnvironment
 
 rapida_api_key = os.environ.get("RAPIDA_API_KEY", "73d3aa9e909f826e29cd698e416b3f0de7a72f7169ed1044f31f6971cc92dab6")
+# rapida_endpoint_url = os.environ.get("RAPIDA_ENDPOINT_URL", "connect.rapida.ai")
+#
 rapida_endpoint_url = os.environ.get("RAPIDA_ENDPOINT_URL", "localhost:9005")
-
 # init rapida client with options
 options = RapidaClientOptions(
     api_key=rapida_api_key,
     endpoint_url=rapida_endpoint_url,
-    environment=RapidaEnvironment.PRODUCTION
+    environment=RapidaEnvironment.PRODUCTION, is_secure=False,
 )
 
 client = RapidaClient(options)
@@ -27,13 +28,11 @@ async def all_example():
             options={
                 "cache": False,
                 "retry_count": 2,
-            },  # {'cache':False, 'retry_count':2}
+            },
         )
 
-        print(response)
-        response.dict()
-        response.json()
-        response.get("")
+        print(response.to_dict())
+        print(response.to_json())
 
     except RapidaException as ex:
         print(ex.message)

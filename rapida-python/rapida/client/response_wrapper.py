@@ -1,7 +1,7 @@
 import json
 import logging
-from typing import Mapping
-
+from typing import Dict, Mapping
+from google.protobuf.json_format import MessageToDict, MessageToJson
 from rapida.artifacts.protos.endpoint_service import (
     invoker_api_pb2,
 )
@@ -28,14 +28,10 @@ class InvokeResponseWrapper:
         return self.data.timeTaken
 
     def to_json(self) -> json:
-        rsp: json = json.loads(self.data.response)
-        return rsp
+        return MessageToJson(self.data)
 
-    def to_dict(self) -> Mapping[str, str]:
-        results: Mapping[str, str] = []
-        for _k, _v in self.get_json_response(self.data.response):
-            results[_k] = _v
-        return results
+    def to_dict(self) -> Dict:
+        return MessageToDict(self.data)
 
     def get_code(self):
         return self.code

@@ -13,6 +13,7 @@ import time
 from abc import ABC
 from typing import Any, Dict
 
+import grpc
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.message import Message
 from google.protobuf.reflection import GeneratedProtocolMessageType
@@ -38,14 +39,16 @@ class GRPCBridge(ABC):
     rapida_api_key: str
     rapida_region: str
     rapida_environment: str
+    rapida_is_secure: bool
 
     @classmethod
     def __init__(
-        cls,
-        service_url: str,
-        rapida_api_key: str,
-        rapida_region: str,
-        rapida_environment: str,
+            cls,
+            service_url: str,
+            rapida_api_key: str,
+            rapida_region: str,
+            rapida_environment: str,
+            rapida_is_secure: bool
     ):
         """
         Args:
@@ -58,14 +61,22 @@ class GRPCBridge(ABC):
         cls.rapida_api_key = rapida_api_key
         cls.rapida_region = rapida_region
         cls.rapida_environment = rapida_environment
+        cls.rapida_is_secure = rapida_is_secure
+
+    @classmethod
+    def channel(cls):
+        if not cls.rapida_is_secure:
+            return grpc_aio.insecure_channel(cls.service_url)
+        return grpc_aio.secure_channel(cls.service_url, grpc.ssl_channel_credentials())
+        # as channel:
 
     @classmethod
     async def fetch(
-        cls,
-        stub: Any,
-        attr: str,
-        message_type: Message,
-        **unmarshal_options,
+            cls,
+            stub: Any,
+            attr: str,
+            message_type: Message,
+            **unmarshal_options,
     ) -> Dict[str, Any]:
         """
         Generic requestor
@@ -90,8 +101,7 @@ class GRPCBridge(ABC):
         started_request = time.time()
         try:
             _log.debug(f"grpc_bridge: in span of {attr}")
-
-            async with grpc_aio.insecure_channel(cls.service_url) as channel:
+            async with cls.channel() as channel:
                 _log.debug(f"grpc_bridge: created secure channel for {cls.service_url}")
 
                 # get attribute from stub

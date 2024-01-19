@@ -2,6 +2,7 @@ from typing import Any, Dict, Union, Optional, Tuple
 
 from rapida.artifacts.protos.endpoint_service.invoker_api_pb2 import InvokerError
 from rapida.client.rapida_bridge import RapidaBridge
+from rapida.client.response_wrapper import InvokeResponseWrapper
 from rapida.rapida_client_options import RapidaClientOptions
 from rapida.exceptions import RapidaException
 from rapida.exceptions.exceptions import handle_request_exception
@@ -38,6 +39,7 @@ class RapidaClient:
             rapida_api_key=options.rapida_api_key,
             rapida_region=options.rapida_region.get(),
             rapida_environment=options.rapida_environment.get(),
+            rapida_is_secure=options.is_secure
         )
 
     def _endpoint_params(
@@ -80,7 +82,7 @@ class RapidaClient:
             inputs: Dict[str, str],
             metadata: Dict[str, str],
             options: Dict[str, Any],
-    ):
+    ) -> InvokeResponseWrapper:
         """
         Invokes a deployment with the specified key.
 
@@ -109,7 +111,7 @@ class RapidaClient:
             options,
         )
 
-        if response.success:
+        if response.is_success():
             return response
 
         self.handle_deployment_exception(response.error)
