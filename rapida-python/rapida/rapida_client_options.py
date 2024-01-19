@@ -59,6 +59,7 @@ class RapidaClientOptions:
     rapida_endpoint_url: str
     rapida_region: Optional[RapidaRegion]
     rapida_environment: Optional[RapidaEnvironment]
+    is_secure: bool
 
     def __init__(
             self,
@@ -66,6 +67,7 @@ class RapidaClientOptions:
             endpoint_url: Optional[str] = None,
             environment: Optional[RapidaEnvironment] = RapidaEnvironment.PRODUCTION,
             region: Optional[RapidaRegion] = RapidaRegion.ALL,
+            is_secure: bool = True
     ):
         """
 
@@ -83,3 +85,4 @@ class RapidaClientOptions:
             "RAPIDA_ENVIRONMENT"
         )
         self.rapida_region = region or os.environ.get("RAPIDA_REGION")
+        self.is_secure = is_secure
