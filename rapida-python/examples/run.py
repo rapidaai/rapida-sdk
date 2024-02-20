@@ -1,10 +1,8 @@
 import asyncio
 import os
 
-import sys
 import time
 
-sys.path.append("..")
 from rapida import RapidaClient, RapidaClientOptions, RapidaException, RapidaEnvironment
 
 rapida_api_key = os.environ.get(
