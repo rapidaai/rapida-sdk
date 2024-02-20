@@ -39,12 +39,12 @@ class RapidaClient:
             rapida_api_key=options.rapida_api_key,
             rapida_region=options.rapida_region.get(),
             rapida_environment=options.rapida_environment.get(),
-            rapida_is_secure=options.is_secure
+            rapida_is_secure=options.is_secure,
         )
 
     def _endpoint_params(
-            self,
-            endpoint: Tuple[int, Union[str, None]],
+        self,
+        endpoint: Tuple[int, Union[str, None]],
     ) -> Tuple[int, str]:
         rapida_endpoint, rapida_endpoint_version = endpoint
         if rapida_endpoint is None:
@@ -81,11 +81,11 @@ class RapidaClient:
         return _extras
 
     async def invoke(
-            self,
-            endpoint: Tuple[int, Union[str, None]],
-            inputs: Dict[str, str],
-            metadata: Optional[Dict[str, str]] = None,
-            options: Optional[Dict[str, Any]] = None,
+        self,
+        endpoint: Tuple[int, Union[str, None]],
+        inputs: Dict[str, str],
+        metadata: Optional[Dict[str, str]] = None,
+        options: Optional[Dict[str, Any]] = None,
     ) -> InvokeResponseWrapper:
         """
         Invokes a deployment with the specified key.
@@ -101,9 +101,7 @@ class RapidaClient:
         Raises:
             `RequestException`: If the invocation request fails.
         """
-        endpoint_id, endpoint_version = self._endpoint_params(
-            endpoint
-        )
+        endpoint_id, endpoint_version = self._endpoint_params(endpoint)
 
         options: Dict[str, str] = self._options(options)
 

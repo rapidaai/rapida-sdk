@@ -43,12 +43,12 @@ class GRPCBridge(ABC):
 
     @classmethod
     def __init__(
-            cls,
-            service_url: str,
-            rapida_api_key: str,
-            rapida_region: str,
-            rapida_environment: str,
-            rapida_is_secure: bool
+        cls,
+        service_url: str,
+        rapida_api_key: str,
+        rapida_region: str,
+        rapida_environment: str,
+        rapida_is_secure: bool,
     ):
         """
         Args:
@@ -72,11 +72,11 @@ class GRPCBridge(ABC):
 
     @classmethod
     async def fetch(
-            cls,
-            stub: Any,
-            attr: str,
-            message_type: Message,
-            **unmarshal_options,
+        cls,
+        stub: Any,
+        attr: str,
+        message_type: Message,
+        **unmarshal_options,
     ) -> Dict[str, Any]:
         """
         Generic requestor
