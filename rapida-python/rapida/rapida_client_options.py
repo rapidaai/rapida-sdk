@@ -85,8 +85,8 @@ class RapidaClientOptions:
             environment:
         """
         self.rapida_api_key = api_key or os.environ.get("RAPIDA_API_KEY")
-        self.rapida_endpoint_url = endpoint_url or os.environ.get(
-            "RAPIDA_ENDPOINT_URL" or self.ENDPOINT_URL
+        self.rapida_endpoint_url = (
+            endpoint_url or os.environ.get("RAPIDA_ENDPOINT_URL") or self.ENDPOINT_URL
         )
         self.rapida_environment = environment or os.environ.get("RAPIDA_ENVIRONMENT")
         self.rapida_region = region or os.environ.get("RAPIDA_REGION")

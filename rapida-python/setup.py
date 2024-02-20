@@ -32,7 +32,7 @@ setup(
     classifiers=classifiers,
     platforms=["POSIX"],
     url="https://github.com/rapidaai/rapida-sdk",
-    packages=find_packages(exclude=["examples", "*.proto"]),
+    packages=find_packages(exclude=["examples", "invoker-api.proto"]),
     install_requires=[
         "grpcio==1.60.0",
         "protobuf==4.25.2",

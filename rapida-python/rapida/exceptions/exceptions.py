@@ -44,19 +44,22 @@ class RapidaConfigurationException(RapidaException):
     An error caused by client or server configuration
     """
 
-    pass
+    def __init__(self, message: str, source: str):
+        super().__init__(400, message, source)
 
 
 class RapidaInternalServerException(RapidaException):
     """An error caused by uncontrolled server response"""
 
-    pass
+    def __init__(self, code: int, message: str, source: str):
+        super().__init__(code, message, source)
 
 
 class RapidaInvalidAPIException(RapidaException):
     """Raised if the provider API key is invalid."""
 
-    pass
+    def __init__(self, code: int, message: str, source: str):
+        super().__init__(code, message, source)
 
 
 def handle_request_exception(error: InvokerError):
@@ -84,8 +87,14 @@ def handle_request_exception(error: InvokerError):
 
 
 class RapidaWarning(Warning):
+    """
+    Warning message
+    """
+
+    message: str
+
     def __init__(self, message: str):
-        super().__init__(self.message)
+        super().__init__(message)
 
     def __str__(self) -> str:
         """
