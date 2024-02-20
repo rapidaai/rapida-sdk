@@ -30,9 +30,6 @@ class RapidaClient:
         if options.rapida_api_key is None or len(options.rapida_api_key) == 0:
             raise RapidaConfigurationException("The provided API key is invalid.")
 
-        if options.rapida_endpoint_url is None or len(options.rapida_endpoint_url) == 0:
-            raise RapidaConfigurationException("The provided endpoint URL is invalid.")
-
         self.options = options
         self.rapida_bridge = RapidaBridge(
             service_url=options.rapida_endpoint_url,
