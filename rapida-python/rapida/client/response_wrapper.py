@@ -31,13 +31,13 @@ class InvokeResponseWrapper:
         return self.data.requestId
 
     def to_json(self) -> json:
-        return self.data.response
+        return MessageToJson(self.data)
 
     def to_dict(self) -> Dict:
-        data = MessageToDict(self.data)
-        if "response" in data:
-            return json.loads(data["response"])
-        return data
+        return MessageToDict(self.data)
+
+    def get_data(self) -> str:
+        return self.data.response
 
     def get_code(self):
         return self.code

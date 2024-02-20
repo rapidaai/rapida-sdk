@@ -32,7 +32,13 @@ class RapidaBridge(GRPCBridge):
             rapida_region:
             rapida_environment:
         """
-        super().__init__(service_url, rapida_api_key, rapida_region, rapida_environment, rapida_is_secure)
+        super().__init__(
+            service_url,
+            rapida_api_key,
+            rapida_region,
+            rapida_environment,
+            rapida_is_secure,
+        )
 
     async def make_invoke_call(
         self,
@@ -69,7 +75,9 @@ class RapidaBridge(GRPCBridge):
             # including_default_value_fields=True,
         )
 
-        return InvokeResponseWrapper(ParseDict(response, invoker_api_pb2.InvokeResponse()))
+        return InvokeResponseWrapper(
+            ParseDict(response, invoker_api_pb2.InvokeResponse())
+        )
 
     async def make_probe_call(
         self, rapida_audit_id: int
@@ -89,7 +97,6 @@ class RapidaBridge(GRPCBridge):
             preserving_proto_field_name=True,
             # including_default_value_fields=True,
         )
-
         return ParseDict(
             response, invoker_api_pb2.ProbeResponse(), ignore_unknown_fields=True
         )

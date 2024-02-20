@@ -3,7 +3,11 @@ author: prashant.srivastav
 """
 
 from rapida.rapida_client import RapidaClient
-from rapida.rapida_client_options import RapidaClientOptions, RapidaEnvironment, RapidaRegion
+from rapida.rapida_client_options import (
+    RapidaClientOptions,
+    RapidaEnvironment,
+    RapidaRegion,
+)
 from rapida.exceptions import (
     RapidaException,
     RapidaInternalServerException,
@@ -21,5 +25,5 @@ __all__ = [
     "RapidaConfigurationException",
     "VERSION",
     "RapidaEnvironment",
-    "RapidaRegion"
+    "RapidaRegion",
 ]
