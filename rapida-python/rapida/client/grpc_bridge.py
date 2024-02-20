@@ -16,7 +16,6 @@ from typing import Any, Dict
 import grpc
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.message import Message
-from google.protobuf.reflection import GeneratedProtocolMessageType
 from grpc import aio as grpc_aio
 from grpc.aio import Metadata
 from grpc.aio._channel import UnaryUnaryMultiCallable
