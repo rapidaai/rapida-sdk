@@ -2,7 +2,7 @@ import json
 import logging
 from typing import Dict, Mapping
 from google.protobuf.json_format import MessageToDict, MessageToJson
-from rapida.artifacts.protos.endpoint_service import (
+from rapida.artifacts.protos import (
     invoker_api_pb2,
 )
 from rapida.exceptions import RapidaWarning

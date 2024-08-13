@@ -1,5 +1,5 @@
 import logging
-from rapida.artifacts.protos.endpoint_service.invoker_api_pb2 import InvokerError
+from rapida.artifacts.protos.invoker_api_pb2 import InvokerError
 
 _log = logging.getLogger("rapida.exceptions")
 

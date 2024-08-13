@@ -2,11 +2,13 @@
 author: prashant.srivastav
 """
 import logging
-from typing import Dict, Optional
+from typing import Dict, Optional, Mapping
 from google.protobuf.json_format import ParseDict
-from rapida.client.response_wrapper import InvokeResponseWrapper
+from google.protobuf.any_pb2 import Any
 
-from rapida.artifacts.protos.endpoint_service import (
+
+from rapida.client.response_wrapper import InvokeResponseWrapper
+from rapida.artifacts.protos import (
     invoker_api_pb2,
     invoker_api_pb2_grpc,
 )
@@ -44,7 +46,7 @@ class RapidaBridge(GRPCBridge):
         self,
         endpoint_id: int,
         version: str,
-        body_params: Dict[str, str],
+        body_params: Mapping[str, Any],
         metadata: Optional[Dict[str, str]],
         override_options: Optional[Dict[str, str]],
     ) -> InvokeResponseWrapper:
@@ -72,7 +74,6 @@ class RapidaBridge(GRPCBridge):
                 options=override_options,
             ),
             preserving_proto_field_name=True,
-            # including_default_value_fields=True,
         )
 
         return InvokeResponseWrapper(
