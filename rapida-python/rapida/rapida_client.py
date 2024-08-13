@@ -1,13 +1,13 @@
-from typing import Any, Dict, Union, Optional, Tuple
-
-from rapida.artifacts.protos.endpoint_service.invoker_api_pb2 import InvokerError
+import warnings
+from typing import Dict, Union, Optional, Tuple, Mapping
+from rapida.artifacts.protos.invoker_api_pb2 import InvokerError
 from rapida.client.rapida_bridge import RapidaBridge
 from rapida.client.response_wrapper import InvokeResponseWrapper
 from rapida.rapida_client_options import RapidaClientOptions
 from rapida.exceptions import RapidaException
 from rapida.exceptions.exceptions import handle_request_exception
 from rapida.exceptions.exceptions import RapidaConfigurationException
-import warnings
+from google.protobuf.any_pb2 import Any
 
 
 class RapidaClient:
@@ -40,8 +40,8 @@ class RapidaClient:
         )
 
     def _endpoint_params(
-        self,
-        endpoint: Tuple[int, Union[str, None]],
+            self,
+            endpoint: Tuple[int, Union[str, None]],
     ) -> Tuple[int, str]:
         rapida_endpoint, rapida_endpoint_version = endpoint
         if rapida_endpoint is None:
@@ -78,11 +78,11 @@ class RapidaClient:
         return _extras
 
     async def invoke(
-        self,
-        endpoint: Tuple[int, Union[str, None]],
-        inputs: Dict[str, str],
-        metadata: Optional[Dict[str, str]] = None,
-        options: Optional[Dict[str, Any]] = None,
+            self,
+            endpoint: Tuple[int, Union[str, None]],
+            inputs: Mapping[str, Any],
+            metadata: Optional[Dict[str, str]] = None,
+            options: Optional[Dict[str, Any]] = None,
     ) -> InvokeResponseWrapper:
         """
         Invokes a deployment with the specified key.
@@ -99,9 +99,7 @@ class RapidaClient:
             `RequestException`: If the invocation request fails.
         """
         endpoint_id, endpoint_version = self._endpoint_params(endpoint)
-
         options: Dict[str, str] = self._options(options)
-
         response = await self.rapida_bridge.make_invoke_call(
             endpoint_id,
             endpoint_version,
@@ -133,18 +131,14 @@ class RapidaClient:
         response = await self.rapida_bridge.make_update_call(
             rapida_audit_id, rapida_metadata
         )
-
         if response.success:
             return response
-
         self.handle_deployment_exception(response.error)
 
     async def probe(self, rapida_audit_id: int):
         response = await self.rapida_bridge.make_probe_call(rapida_audit_id)
-
         if response.success:
             return response
-
         self.handle_deployment_exception(response.error)
 
     def handle_deployment_exception(self, error: Union[None, InvokerError]):
