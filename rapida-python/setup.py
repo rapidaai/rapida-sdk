@@ -10,10 +10,10 @@ def read(*parts):
 
 
 classifiers = [
-    "Development Status :: 5 - Development/Unstable",
-    "Programming Language :: Python :: 3 :: Only",
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3.9",
     "Environment :: Web Environment",
-    "Intended Audience :: RapidaAI Customers",
+    "Intended Audience :: Developers",
 ]
 
 VERSION = {}
@@ -27,24 +27,21 @@ setup(
     version=VERSION["VERSION"],
     author_email="code@rapida.ai",
     description="rapidaAi sdk to integrate rapida.ai api's",
-    long_description="\n\n".join((read("README.adoc"), read("CHANGELOG.adoc"))),
+    long_description=read("README.md"),
     long_description_content_type="text/markdown",
     classifiers=classifiers,
     platforms=["POSIX"],
     url="https://github.com/rapidaai/rapida-sdk",
-    packages=find_packages(exclude=["tests"]),
+    packages=find_packages(exclude=["examples", "invoker-api.proto"]),
     install_requires=[
-        "aiohttp==3.8.1",
-        "grpcio==1.47.0",
-        "protobuf==3.20.1",
-        "types-protobuf==3.19.22",
-        "pydantic==1.9.1",
+        "grpcio==1.60.0",
+        "protobuf==4.25.2",
     ],
     extras_require={
-        "grpcio-tools": ["grpcio-tools==1.47.0"],
+        "grpcio-tools": ["grpcio-tools==1.60.0"],
     },
     tests_require=["pytest", "pytest-cov", "flake8", "black", "mypy"],
     package_data={"rapida-python": ["py.typed"]},
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     include_package_data=True,
 )

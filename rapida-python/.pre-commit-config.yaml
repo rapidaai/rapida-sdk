@@ -1,3 +1,4 @@
+exclude: 'artifacts/'
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: 'v4.3.0'
@@ -17,7 +18,7 @@ repos:
   hooks:
   - id: end-of-file-fixer
     exclude: >-
-      ^docs/[^/]*\.svg$
+      ^rapida-python\/setup\.cfg$
   - id: requirements-txt-fixer
   - id: trailing-whitespace
     types: [python]
@@ -51,6 +52,7 @@ repos:
   rev: '4.0.1'
   hooks:
   - id: flake8
+    args: ['--ignore=E501']
 - repo: https://github.com/Lucas-C/pre-commit-hooks-markup
   rev: v1.0.1
   hooks:
