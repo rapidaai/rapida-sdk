@@ -1,13 +1,61 @@
 import json
 import logging
-from typing import Dict, Mapping
-from google.protobuf.json_format import MessageToDict, MessageToJson
+import warnings
+from typing import Dict, Mapping, List
+from google.protobuf.json_format import MessageToDict, MessageToJson, ParseDict
+from google.protobuf.struct_pb2 import Struct
+
 from rapida.artifacts.protos import (
-    invoker_api_pb2,
+    invoker_api_pb2, common_pb2,
 )
 from rapida.exceptions import RapidaWarning
 
 _log = logging.getLogger("rapida.exceptions")
+
+
+class Content:
+    _original: common_pb2.Content
+    content: bytes
+    contentFormat: str
+    contentType: str
+    meta: Struct
+
+    def __init__(self, data: common_pb2.Content) -> None:
+        self.content = data.content
+        self.contentFormat = data.contentFormat
+        self.contentType = data.contentType
+        self.meta = data.meta
+        self._original = data
+
+    def to_text(self) -> str:
+        if self.contentType == "text" and self.contentFormat == "raw":
+            return str(self.content, 'utf-8')
+        warnings.warn("to_text should always get called for text format content")
+
+    def to_json(self) -> json:
+        return MessageToJson(self._original)
+
+    def to_dict(self) -> Dict:
+        return MessageToDict(self._original)
+
+
+class Metric:
+    _original: common_pb2.Metric
+    description: str
+    name: str
+    value: str
+
+    def __init__(self, data: common_pb2.Metric) -> None:
+        self.value = data.value
+        self.name = data.name
+        self.description = data.description
+        self._original = data
+
+    def to_json(self) -> json:
+        return MessageToJson(self._original)
+
+    def to_dict(self) -> Dict:
+        return MessageToDict(self._original)
 
 
 class InvokeResponseWrapper:
@@ -36,8 +84,17 @@ class InvokeResponseWrapper:
     def to_dict(self) -> Dict:
         return MessageToDict(self.data)
 
-    def get_data(self) -> str:
-        return self.data.response
+    def get_data(self) -> List[Content]:
+        content_list: List[Content] = []
+        for cnt in self.data.responses:
+            content_list.append(Content(cnt))
+        return content_list
+
+    def get_metrics(self) -> List[Metric]:
+        m_list: List[Metric] = []
+        for mtr in self.data.metrics:
+            m_list.append(Metric(mtr))
+        return m_list
 
     def get_code(self):
         return self.code

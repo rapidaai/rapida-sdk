@@ -48,7 +48,7 @@ def AudioValue(file_path: str) -> Any:
         """
     if not os.path.isfile(file_path):
         raise RapidaException(
-            code=  400,
+            code=400,
             message=f"The file at {file_path} does not exist.",
             source="local",
         )
@@ -57,7 +57,7 @@ def AudioValue(file_path: str) -> Any:
     mime_type, _ = mimetypes.guess_type(file_path)
     if not mime_type or not mime_type.startswith('audio'):
         raise RapidaException(
-            code=  400,
+            code=400,
             message="The file is not a valid audio file.",
             source="local",
         )
@@ -68,29 +68,30 @@ def AudioValue(file_path: str) -> Any:
 
         if not audio_data:
             raise RapidaException(
-                code=  400,
+                code=400,
                 message="Please provide a valid audio file.",
                 source="local",
             )
 
         # Create a BytesValue protobuf message with the audio data
-        bytes_value = BytesValue(value=audio_data)
+        # bytes_value = BytesValue(value=audio_data)
 
         # Create an Any message and pack the BytesValue into it
         any_message = Any()
-        any_message.Pack(bytes_value)
+        # file_any = any_pb2.Any()
+        any_message.value = audio_data
 
         return any_message
 
     except IOError as e:
         raise RapidaException(
-            code=  400,
+            code= 400,
             message=f"An error occurred while reading the file: {e}",
             source="local",
         )
     except ValueError as e:
         raise RapidaException(
-            code=  400,
+            code= 400,
             message=f"Error packing the file data: {e}",
             source="local",
         )
