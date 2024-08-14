@@ -79,7 +79,7 @@ def FileValue(file_path: str) -> Any:
 
         # Create an Any message and pack the BytesValue into it
         any_message = Any()
-        any_message.Pack(bytes_value)
+        any_message.value = bytes_value
 
         return any_message
 
@@ -145,7 +145,7 @@ def AudioValue(file_path: str) -> Any:
         # Create an Any message and pack the BytesValue into it
         any_message = Any()
         # file_any = any_pb2.Any()
-        any_message.Pack(audio_data)
+        any_message.value = audio_data
 
         return any_message
 
@@ -201,7 +201,7 @@ def ImageValue(file_path: str) -> Any:
 
         # Create an Any message and pack the BytesValue into it
         any_message = Any()
-        any_message.Pack(bytes_value)
+        any_message.value = bytes_value
 
         return any_message
     except IOError as e:
@@ -274,12 +274,12 @@ def URLValue(url: str) -> Any:
     """
     # Validate the URL
     url_pattern = re.compile(
-        r'^(?:http|ftp)s?://' # http:// or https://
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' # domain...
-        r'localhost|' # localhost...
-        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|' # ...or ipv4
-        r'\[?[A-F0-9]*:[A-F0-9:]+\]?)' # ...or ipv6
-        r'(?::\d+)?' # optional port
+        r'^(?:http|ftp)s?://'  # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
+        r'localhost|'  # localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'  # ...or ipv4
+        r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'  # ...or ipv6
+        r'(?::\d+)?'  # optional port
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
     if not re.match(url_pattern, url):

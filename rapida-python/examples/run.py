@@ -4,7 +4,7 @@ import os
 import sys
 import time
 
-from rapida.util import String
+from rapida.values import StringValue
 
 sys.path.append("..")
 from rapida import RapidaClient, RapidaClientOptions, RapidaException, RapidaEnvironment
@@ -28,14 +28,15 @@ async def all_example():
         response = await client.invoke(
             endpoint=(2021826518103097344, "vrsn_2021826518124068864"),
             inputs={
-                "schoox_reviews": String(
+                "schoox_reviews": StringValue(
                     "There is change")
             },
         )
         print(
             f"time taken by rapida {(time.time() - started_request) - (response.get_time_taken() / 1000000000)}"
         )
-        print(response.get_data())
+        for x in response.get_data():
+            print(x.to_text())
         print(response.get_code())
         print(response.is_success())
     except RapidaException as ex:
