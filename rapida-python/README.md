@@ -1,5 +1,3 @@
-![Downloads](https://img.shields.io/github/downloads/RAPIDA/rapida-sdk/total) ![Contributors](https://img.shields.io/github/contributors/RAPIDA/rapida-sdk?color=dark-green) ![Forks](https://img.shields.io/github/forks/RAPIDA/rapida-sdk?style=social) ![Stargazers](https://img.shields.io/github/stars/RAPIDA/rapida-sdk?style=social) ![Issues](https://img.shields.io/github/issues/RAPIDA/rapida-sdk) ![License](https://img.shields.io/github/license/RAPIDA/rapida-sdk)
-
 ## Table Of Contents
 
 * [About the Project](#about-the-project)

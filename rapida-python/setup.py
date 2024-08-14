@@ -36,6 +36,7 @@ setup(
     install_requires=[
         "grpcio==1.60.0",
         "protobuf==4.25.2",
+        "pillow==10.4.0"
     ],
     extras_require={
         "grpcio-tools": ["grpcio-tools==1.60.0"],
