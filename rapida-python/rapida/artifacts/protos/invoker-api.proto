@@ -31,6 +31,7 @@ message CallerResponse {
   repeated Content responses = 4;
   InvokerError error = 5;
   repeated Metric metrics = 6;
+  google.protobuf.Struct meta = 7;
 }
 
 message InvokeResponse {

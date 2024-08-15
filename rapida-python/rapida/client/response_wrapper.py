@@ -90,6 +90,9 @@ class InvokeResponseWrapper:
             content_list.append(Content(cnt))
         return content_list
 
+    def get_metadata(self) -> Dict:
+        return MessageToDict(self.data.meta)
+
     def get_metrics(self) -> List[Metric]:
         m_list: List[Metric] = []
         for mtr in self.data.metrics:

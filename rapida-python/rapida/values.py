@@ -74,12 +74,9 @@ def FileValue(file_path: str) -> Any:
                 source="local",
             )
 
-        # Create a BytesValue protobuf message with the file data
-        bytes_value = BytesValue(value=file_data)
-
         # Create an Any message and pack the BytesValue into it
         any_message = Any()
-        any_message.value = bytes_value
+        any_message.value = file_data
 
         return any_message
 
