@@ -34,8 +34,8 @@ setup(
     url="https://github.com/rapidaai/rapida-sdk",
     packages=find_packages(exclude=["examples", "invoker-api.proto"]),
     install_requires=[
-        "grpcio==1.60.0",
-        "protobuf==4.25.2",
+        "grpcio==1.65.4",
+        "protobuf==5.27.3",
         "pillow==10.4.0"
     ],
     extras_require={
