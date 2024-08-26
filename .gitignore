@@ -3,7 +3,7 @@
 .pypirc
 # Secret stuff
 /.env
-
+venv/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -77,3 +77,75 @@ rapida-python/.mypy_cache/
 
 #dev requirment files
 rapida-python/requirements-dev.txt
+
+
+
+# for java sdk
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Generated files
+bin/
+out/
+
+# Eclipse specific files
+/.classpath
+/.project
+/.settings/
+
+# IDEA specific files
+/.idea/
+/*.iml
+
+# NetBeans specific files
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Maven specific files
+/target/
+/release.properties
+
+# Gradle specific files
+.gradle/
+/build/
+/!gradle-wrapper.jar
+.gradle/cache/
+/.gradle/taskHistory/
+
+# Other files that should be ignored
+.DS_Store
+Thumbs.db
+
+# Windows thumbnail cache files
+Thumbs.db
+
+# Linux generated files
+*~
+
+# Mac specific files
+.DS_Store
+
+# User-specific files
+.idea/
+*.swp
+*.swo
