@@ -79,8 +79,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION=$(cat rapida-golang/version.txt)
+          VERSION=$(cat version.txt)
           GOPROXY="https://proxy.golang.org,direct" \
-          go list -m example.com/my/module@go-v${VERSION} # Replace with your module path
-          go publish ./rapida-golang
-        working-directory: rapida-golang
+          go list -m github.com/rapidaai/rapida-sdk@go-v${VERSION}
+          go publish .
+        # working-directory: rapida-golang
