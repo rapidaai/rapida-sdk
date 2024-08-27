@@ -52,7 +52,6 @@ func NewRapidaClient(options *RapidaClientOption) (*RapidaClient, error) {
 	}
 
 	bridge, err := NewRapidaBridge(options)
-
 	if err != nil {
 		return nil, errors.New("unable to initialize the rapida client")
 	}

@@ -2,8 +2,8 @@ name: Build and Publish Golang SDK
 
 on:
   push:
-    # paths:
-    #   - "rapida-golang/**"
+    paths:
+      - "rapida-golang/**"
     branches:
       - main
       - master
@@ -36,7 +36,7 @@ jobs:
         working-directory: rapida-golang
 
   publish:
-    name: Publish SDK
+    name: Publish Go Package
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
@@ -55,11 +55,16 @@ jobs:
         working-directory: rapida-golang
 
       - name: Authenticate to GitHub Package Registry
-        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+        run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
 
-      - name: Tag version and publish to GitHub Packages
+      #   - name: Tag version and push tags
+      #     run: |
+      #       VERSION=$(cat rapida-golang/version.txt)
+      #       git tag v${VERSION}
+      #       git push origin v${VERSION}
+      #     working-directory: rapida-golang
+
+      - name: Publish to GitHub Packages
         run: |
-          VERSION=$(cat rapida-golang/version.txt)
-          git tag v${VERSION}
-          git push origin --tags
-          go list -m all
+          GOPROXY=https://proxy.pkg.github.com/${{ github.repository_owner }}/go go publish ./rapida-golang
+        working-directory: rapida-golang
