@@ -25,7 +25,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.21.0" # Adjust to the Go version you are using
+          go-version: "1.20" # Adjust to the Go version you are using
 
       - name: Install dependencies
         run: go mod tidy
@@ -36,7 +36,7 @@ jobs:
         working-directory: rapida-golang
 
   publish:
-    name: Publish Go Package
+    name: Publish Go Module
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
@@ -48,7 +48,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.21.0" # Adjust to the Go version you are using
+          go-version: "1.20" # Adjust to the Go version you are using
 
       - name: Install dependencies
         run: go mod tidy
@@ -64,7 +64,11 @@ jobs:
       #       git push origin v${VERSION}
       #     working-directory: rapida-golang
 
-      - name: Publish to GitHub Packages
+      - name: Configure Go Module Proxy
         run: |
-          GOPROXY=https://proxy.pkg.github.com/${{ github.repository_owner }}/go go publish ./rapida-golang
+          go env -w GOPROXY=https://proxy.pkg.github.com/${{ github.repository_owner }}/go
+        working-directory: rapida-golang
+
+      - name: Verify Go module
+        run: go list -m all
         working-directory: rapida-golang

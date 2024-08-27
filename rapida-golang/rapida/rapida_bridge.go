@@ -36,11 +36,12 @@ func NewRapidaBridge(options *RapidaClientOption) (RapidaBridge, error) {
 			grpc.MaxCallSendMsgSize(rapida_constants.MaxSendMsgSize),
 		),
 	}
+
 	endpointConnection, err := grpc.NewClient(*options.GetRapidaEndpointUrl(),
 		grpcOpts...)
 
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("unable to create connection %v", err))
+		return nil, err
 	}
 
 	assistantConnection, err := grpc.NewClient(*options.GetAssistantUrl(),
