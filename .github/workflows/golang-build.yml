@@ -27,7 +27,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21 # Use correct format without minor version or patch
+          go-version: 1.21
 
       - name: Install dependencies
         run: go mod tidy
@@ -50,37 +50,32 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21 # Use correct format without minor version or patch
+          go-version: 1.21
 
       - name: Install dependencies
         run: go mod tidy
         working-directory: rapida-golang
 
-      - name: Authenticate to GitHub Package Registry
-        run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
-
-      - name: Tag version and push tags
-        env:
-          GIT_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Tag the release
+        id: tag
         run: |
           VERSION=$(cat rapida-golang/version.txt)
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          echo "Using token: ${GIT_AUTH_TOKEN:0:4}"
-          git tag go-v${VERSION}
-          git push https://x-access-token:${GIT_AUTH_TOKEN}@github.com/rapidaai/rapida-sdk go-v${VERSION}
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git tag -a "go-v${VERSION}" -m "Release version ${VERSION}"
+          git push origin "go-v${VERSION}"
 
       - name: Configure Go Module Proxy
         run: |
-          go env -w GOPROXY=proxy.golang.org
-          working-directory: rapida-golang
+          go env -w GOPROXY=https://proxy.golang.org,direct
+        working-directory: rapida-golang
 
       - name: Publish to GitHub Packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(cat rapida-golang/version.txt)
-          GOPROXY="https://npm.pkg.github.com/${{ github.repository_owner }}" \
-          go list -m github.com/rapidaai/rapida-sdk@go-v${VERSION}
+          GOPROXY="https://proxy.golang.org,direct" \
+          go list -m example.com/my/module@go-v${VERSION} # Replace with your module path
           go publish ./rapida-golang
         working-directory: rapida-golang
