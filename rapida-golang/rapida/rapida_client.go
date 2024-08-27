@@ -26,6 +26,7 @@
 package rapida
 
 import (
+	"context"
 	"errors"
 
 	rapida_definitions "github.com/rapidaai/rapida-sdk/rapida/definitions"
@@ -67,5 +68,5 @@ func (client *RapidaClient) Invoke(
 	metadata map[string]*anypb.Any,
 	options map[string]*anypb.Any,
 ) (*rapida_definitions.InvokeResponseWrapper, error) {
-	return client.rapidaBridge.Invoke(endpoint, inputs, metadata, options)
+	return client.rapidaBridge.InvokeWithContext(context.Background(), endpoint, inputs, metadata, options)
 }

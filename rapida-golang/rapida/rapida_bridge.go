@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 
 	lexatic_backend "github.com/rapidaai/rapida-sdk/rapida/clients/protos"
 	rapida_constants "github.com/rapidaai/rapida-sdk/rapida/constants"
@@ -20,7 +19,8 @@ type rapidaBridge struct {
 }
 
 type RapidaBridge interface {
-	Invoke(
+	InvokeWithContext(
+		ctx context.Context,
 		endpoint rapida_definitions.EndpointDefinition,
 		inputs map[string]*anypb.Any,
 		metadata map[string]*anypb.Any,
@@ -57,7 +57,8 @@ func NewRapidaBridge(options *RapidaClientOption) (RapidaBridge, error) {
 	}, nil
 }
 
-func (rb *rapidaBridge) Invoke(
+func (rb *rapidaBridge) InvokeWithContext(
+	ctx context.Context,
 	endpoint rapida_definitions.EndpointDefinition,
 	inputs map[string]*anypb.Any,
 	metadata map[string]*anypb.Any,
@@ -74,11 +75,8 @@ func (rb *rapidaBridge) Invoke(
 		Metadata: metadata,
 		Options:  options,
 	}
-
-	// Making the Invoke call using DeploymentClient
-	invokeResponse, err := rb.deploymentClient.Invoke(context.Background(), invokeRequest)
+	invokeResponse, err := rb.deploymentClient.Invoke(ctx, invokeRequest)
 	if err != nil {
-		log.Printf("Failed to invoke endpoint: %v", err)
 		return nil, err
 	}
 
