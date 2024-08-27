@@ -61,7 +61,7 @@ jobs:
 
       - name: Tag version and push tags
         env:
-          GIT_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           VERSION=$(cat rapida-golang/version.txt)
           git config user.name "GitHub Actions"

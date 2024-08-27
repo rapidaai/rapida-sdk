@@ -62,10 +62,10 @@ func NewRapidaClientOption() *RapidaClientOption {
 	apiKey := os.Getenv("RAPIDA_API_KEY")
 	return &RapidaClientOption{
 		RapidaApiKey:       &apiKey,
-		RapidaEndpointUrl:  strPtr(ENDPOINT_URL),
-		RapidaAssistantUrl: strPtr(ASSISTANT_URL),
-		RapidaEnvironment:  envPtr(rapida_constants.PRODUCTION),
-		RapidaRegion:       regionPtr(rapida_constants.ALL),
+		RapidaEndpointUrl:  Ptr(ENDPOINT_URL),
+		RapidaAssistantUrl: Ptr(ASSISTANT_URL),
+		RapidaEnvironment:  Ptr(rapida_constants.PRODUCTION),
+		RapidaRegion:       Ptr(rapida_constants.ALL),
 		IsSecure:           true,
 	}
 }
@@ -104,7 +104,7 @@ func (o *RapidaClientOption) GetRapidaRegion() *rapida_constants.RapidaRegion {
 	if o.RapidaRegion != nil {
 		return o.RapidaRegion
 	}
-	return regionPtr(rapida_constants.ALL)
+	return Ptr(rapida_constants.ALL)
 }
 
 // GetRapidaEnvironment returns the RapidaEnvironment.
@@ -112,7 +112,7 @@ func (o *RapidaClientOption) GetRapidaEnvironment() *rapida_constants.RapidaEnvi
 	if o.RapidaEnvironment != nil {
 		return o.RapidaEnvironment
 	}
-	return envPtr(rapida_constants.PRODUCTION)
+	return Ptr(rapida_constants.PRODUCTION)
 }
 
 // SetRapidaEndpointUrl sets the endpoint URL.
@@ -142,14 +142,6 @@ func (o *RapidaClientOption) SetSecure(secure bool) {
 
 // Utility functions to create pointers from values
 
-func strPtr(s string) *string {
-	return &s
-}
-
-func regionPtr(r rapida_constants.RapidaRegion) *rapida_constants.RapidaRegion {
-	return &r
-}
-
-func envPtr(e rapida_constants.RapidaEnvironment) *rapida_constants.RapidaEnvironment {
-	return &e
+func Ptr[T any](v T) *T {
+	return &v
 }
