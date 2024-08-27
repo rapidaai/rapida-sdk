@@ -40,6 +40,7 @@ type rapidaClient struct {
 
 type Client interface {
 	Invoke(
+		ctx context.Context,
 		endpoint rapida_definitions.EndpointDefinition,
 		inputs map[string]*anypb.Any,
 		metadata map[string]*anypb.Any,
@@ -72,10 +73,11 @@ func GetClient(options *RapidaClientOption) (*rapidaClient, error) {
 
 // Invoke calls the Rapida API with the specified parameters.
 func (client *rapidaClient) Invoke(
+	ctx context.Context,
 	endpoint rapida_definitions.EndpointDefinition,
 	inputs map[string]*anypb.Any,
 	metadata map[string]*anypb.Any,
 	options map[string]*anypb.Any,
 ) (*rapida_definitions.InvokeResponseWrapper, error) {
-	return client.rapidaBridge.InvokeWithContext(context.Background(), endpoint, inputs, metadata, options)
+	return client.rapidaBridge.InvokeWithContext(ctx, endpoint, inputs, metadata, options)
 }

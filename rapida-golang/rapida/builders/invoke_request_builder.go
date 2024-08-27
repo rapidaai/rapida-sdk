@@ -80,6 +80,6 @@ func (b *invokeRequestBuilder) WithOptions(options map[string]*any.Any) *invokeR
 }
 
 // Build returns the parameters needed for the Invoke function
-func (b *invokeRequestBuilder) Build() (rapida_definitions.EndpointDefinition, map[string]*any.Any, map[string]*any.Any, map[string]*any.Any) {
-	return b.endpoint, b.inputs, b.metadata, b.options
+func (b *invokeRequestBuilder) Build() (context.Context, rapida_definitions.EndpointDefinition, map[string]*any.Any, map[string]*any.Any, map[string]*any.Any) {
+	return b.ctx, b.endpoint, b.inputs, b.metadata, b.options
 }
