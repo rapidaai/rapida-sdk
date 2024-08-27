@@ -29,6 +29,7 @@ jobs:
 
       - name: Install dependencies
         run: go mod tidy
+        working-directory: rapida-golang
 
       - name: Build the SDK
         run: go build -v ./rapida-golang/...
@@ -52,6 +53,7 @@ jobs:
 
       - name: Install dependencies
         run: go mod tidy
+        working-directory: rapida-golang
 
       - name: Authenticate to GitHub Package Registry
         run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
