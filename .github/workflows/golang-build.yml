@@ -55,11 +55,11 @@ jobs:
         working-directory: rapida-golang
 
       - name: Authenticate to GitHub Package Registry
-        run: echo "GITHUB_TOKEN=${{ secrets.GH_TOKEN }}" > ~/.npmrc
+        run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
 
       - name: Tag version and push tags
         env:
-          GIT_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GIT_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(cat rapida-golang/version.txt)
           git config user.name "GitHub Actions"
@@ -74,7 +74,7 @@ jobs:
 
       - name: Publish to GitHub Packages
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(cat rapida-golang/version.txt)
           GOPROXY="https://npm.pkg.github.com/${{ github.repository_owner }}" \
