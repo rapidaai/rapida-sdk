@@ -42,7 +42,7 @@ jobs:
         working-directory: rapida-golang
 
       - name: Generate Documentation
-        run: go doc -all ./rapida/... > rapida-api-docs.txt
+        run: go doc -all rapida > rapida-api-docs.txt
         working-directory: rapida-golang
 
   publish:
@@ -89,3 +89,9 @@ jobs:
           VERSION=$(cat rapida-golang/version.txt)
           GOPROXY="https://proxy.golang.org,direct" \
           go list -m github.com/rapidaai/rapida-sdk@v${VERSION}-go
+
+      - name: Upload Documentation
+        uses: actions/upload-artifact@v3
+        with:
+          name: sdk-documentation
+          path: rapida-golang/rapida-api-docs.txt
