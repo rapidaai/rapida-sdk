@@ -78,7 +78,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION=$(cat version.txt)
+          VERSION=$(cat rapida-golang/version.txt)
           GOPROXY="https://proxy.golang.org,direct" \
           go list -m github.com/rapidaai/rapida-sdk@go-v${VERSION}
-        working-directory: rapida-golang
