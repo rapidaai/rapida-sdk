@@ -27,23 +27,50 @@
 package ai.rapida.sdk.clients;
 import ai.rapida.sdk.artifacts.DeploymentGrpc;
 import ai.rapida.sdk.artifacts.InvokerApi;
+import ai.rapida.sdk.constants.Constants;
+import ai.rapida.sdk.enums.RapidaEnvironment;
+import ai.rapida.sdk.enums.RapidaRegion;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
 
 public class DeploymentClient {
 
     private final DeploymentGrpc.DeploymentBlockingStub blockingStub;
 
-    public DeploymentClient(String host, int port) {
+    public DeploymentClient(String host, int port,
+                            String rapidaKey,
+                            RapidaRegion region,
+                            RapidaEnvironment environment,
+                            boolean isSecure) {
+
+
+        Metadata headers = new Metadata();
+        headers.put(Metadata.Key.of(Constants.HEADER_API_KEY, Metadata.ASCII_STRING_MARSHALLER), rapidaKey);
+        headers.put(Metadata.Key.of(Constants.HEADER_ENVIRONMENT_KEY, Metadata.ASCII_STRING_MARSHALLER), environment.name());
+        headers.put(Metadata.Key.of(Constants.HEADER_SOURCE_KEY, Metadata.ASCII_STRING_MARSHALLER), Constants.DEFAULT_SOURCE.name());
+        headers.put(Metadata.Key.of(Constants.HEADER_REGION_KEY, Metadata.ASCII_STRING_MARSHALLER), region.name());
+
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext()
+                .intercept(new HeaderClientInterceptor(headers))
                 .build();
         blockingStub = DeploymentGrpc.newBlockingStub(channel);
     }
 
-    public DeploymentClient(String url) {
+    public DeploymentClient(String url, String rapidaKey,
+                            RapidaRegion region,
+                            RapidaEnvironment environment,
+                            boolean isSecure) {
+
+        Metadata headers = new Metadata();
+        headers.put(Metadata.Key.of(Constants.HEADER_API_KEY, Metadata.ASCII_STRING_MARSHALLER), rapidaKey);
+        headers.put(Metadata.Key.of(Constants.HEADER_ENVIRONMENT_KEY, Metadata.ASCII_STRING_MARSHALLER), environment.name());
+        headers.put(Metadata.Key.of(Constants.HEADER_SOURCE_KEY, Metadata.ASCII_STRING_MARSHALLER), Constants.DEFAULT_SOURCE.name());
+        headers.put(Metadata.Key.of(Constants.HEADER_REGION_KEY, Metadata.ASCII_STRING_MARSHALLER), region.name());
         ManagedChannel channel = ManagedChannelBuilder.forTarget(url)
                 .usePlaintext()
+                .intercept(new HeaderClientInterceptor(headers))
                 .build();
         blockingStub = DeploymentGrpc.newBlockingStub(channel);
     }

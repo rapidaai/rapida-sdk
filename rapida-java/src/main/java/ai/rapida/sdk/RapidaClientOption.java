@@ -25,6 +25,7 @@
  */
 
 package ai.rapida.sdk;
+import ai.rapida.sdk.constants.Constants;
 import ai.rapida.sdk.enums.RapidaEnvironment;
 import ai.rapida.sdk.enums.RapidaRegion;
 
@@ -36,16 +37,14 @@ import java.util.logging.Logger;
  * @author prashant.srivastav
  */
 public class RapidaClientOption {
-    private String rapidaApiKey;
+    private final String rapidaApiKey;
     private String rapidaEndpointUrl;
-
     private String rapidaAssistantUrl;
     private RapidaRegion rapidaRegion;
     private RapidaEnvironment rapidaEnvironment;
     private boolean isSecure;
 
-    private static final String ENDPOINT_URL = "connect.rapida.ai";
-    private static final String ASSISTANT_URL = "assistant.rapida.ai:8080";
+
     private static final Logger logger = Logger.getLogger(RapidaClientOption.class.getName());
 
 
@@ -65,9 +64,9 @@ public class RapidaClientOption {
     }
 
     public RapidaClientOption() {
-        this.rapidaApiKey = System.getenv("RAPIDA_API_KEY");
-        this.rapidaEndpointUrl = ENDPOINT_URL;
-        this.rapidaAssistantUrl = ASSISTANT_URL;
+        this.rapidaApiKey = System.getenv(Constants.ENV_API_KEY);
+        this.rapidaEndpointUrl = Constants.ENDPOINT_URL;
+        this.rapidaAssistantUrl = Constants.ASSISTANT_URL;
         this.rapidaEnvironment = RapidaEnvironment.PRODUCTION;
         this.rapidaRegion = RapidaRegion.ALL;
         this.isSecure = true;
@@ -84,19 +83,19 @@ public class RapidaClientOption {
         }
 
         // If rapidaEndpointUrl is null, get the environment variable, or return the default endpoint URL
-        String endpointUrl = Optional.ofNullable(System.getenv("RAPIDA_ENDPOINT_URL")).orElse(ENDPOINT_URL);
+        String endpointUrl = Optional.ofNullable(System.getenv(Constants.ENV_KEY_ENDPOINT_URL)).orElse(Constants.ENDPOINT_URL);
         return Optional.of(endpointUrl);
     }
 
     public Optional<String> getAssistantUrl() {
         // Return the rapidaEndpointUrl wrapped in an Optional if it's not null
-        if (this.rapidaEndpointUrl != null) {
-            return Optional.of(this.rapidaEndpointUrl);
+        if (this.rapidaAssistantUrl != null) {
+            return Optional.of(this.rapidaAssistantUrl);
         }
 
-        // If rapidaEndpointUrl is null, get the environment variable, or return the default endpoint URL
-        String endpointUrl = Optional.ofNullable(System.getenv("RAPIDA_ENDPOINT_URL")).orElse(ENDPOINT_URL);
-        return Optional.of(endpointUrl);
+        // If rapidaEndpointUrl is null, get the environment variable, or return the default assistant URL
+        String rapidaAssistantUrl = Optional.ofNullable(System.getenv(Constants.ENV_KEY_ASSISTANT_URL)).orElse(Constants.ASSISTANT_URL);
+        return Optional.of(rapidaAssistantUrl);
     }
 
     public Optional<RapidaRegion> getRapidaRegion() {

@@ -28,8 +28,12 @@ package ai.rapida.sdk.clients;
 
 import ai.rapida.sdk.artifacts.TalkApi;
 import ai.rapida.sdk.artifacts.TalkServiceGrpc;
+import ai.rapida.sdk.constants.Constants;
+import ai.rapida.sdk.enums.RapidaEnvironment;
+import ai.rapida.sdk.enums.RapidaRegion;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
 
 import java.util.Iterator;
 
@@ -37,17 +41,37 @@ public class TalkServiceClient {
     private final TalkServiceGrpc.TalkServiceBlockingStub blockingStub;
     private final TalkServiceGrpc.TalkServiceStub asyncStub;
 
-    public TalkServiceClient(String host, int port) {
+    public TalkServiceClient(String host, int port, String rapidaKey,
+                             RapidaRegion region,
+                             RapidaEnvironment environment,
+                             boolean isSecure) {
+
+        Metadata headers = new Metadata();
+        headers.put(Metadata.Key.of(Constants.HEADER_API_KEY, Metadata.ASCII_STRING_MARSHALLER), rapidaKey);
+        headers.put(Metadata.Key.of(Constants.HEADER_ENVIRONMENT_KEY, Metadata.ASCII_STRING_MARSHALLER), environment.name());
+        headers.put(Metadata.Key.of(Constants.HEADER_SOURCE_KEY, Metadata.ASCII_STRING_MARSHALLER), Constants.DEFAULT_SOURCE.name());
+        headers.put(Metadata.Key.of(Constants.HEADER_REGION_KEY, Metadata.ASCII_STRING_MARSHALLER), region.name());
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext()
+                .intercept(new HeaderClientInterceptor(headers))
                 .build();
         blockingStub = TalkServiceGrpc.newBlockingStub(channel);
         asyncStub = TalkServiceGrpc.newStub(channel);
     }
 
-    public TalkServiceClient(String url) {
+    public TalkServiceClient(String url, String rapidaKey,
+                             RapidaRegion region,
+                             RapidaEnvironment environment,
+                             boolean isSecure) {
+
+        Metadata headers = new Metadata();
+        headers.put(Metadata.Key.of(Constants.HEADER_API_KEY, Metadata.ASCII_STRING_MARSHALLER), rapidaKey);
+        headers.put(Metadata.Key.of(Constants.HEADER_ENVIRONMENT_KEY, Metadata.ASCII_STRING_MARSHALLER), environment.name());
+        headers.put(Metadata.Key.of(Constants.HEADER_SOURCE_KEY, Metadata.ASCII_STRING_MARSHALLER), Constants.DEFAULT_SOURCE.name());
+        headers.put(Metadata.Key.of(Constants.HEADER_REGION_KEY, Metadata.ASCII_STRING_MARSHALLER), region.name());
         ManagedChannel channel = ManagedChannelBuilder.forTarget(url)
                 .usePlaintext()
+                .intercept(new HeaderClientInterceptor(headers))
                 .build();
         blockingStub = TalkServiceGrpc.newBlockingStub(channel);
         asyncStub = TalkServiceGrpc.newStub(channel);

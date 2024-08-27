@@ -40,8 +40,19 @@ public class RapidaBridge {
     private final TalkServiceClient talkServiceClient;
 
     public RapidaBridge(RapidaClientOption options) {
-        this.deploymentClient = new DeploymentClient(options.getRapidaEndpointUrl().get());
-        this.talkServiceClient = new TalkServiceClient(options.getAssistantUrl().get());
+        this.deploymentClient = new DeploymentClient(
+                options.getRapidaEndpointUrl().get(),
+                options.getRapidaApiKey().get(),
+                options.getRapidaRegion().get(),
+                options.getRapidaEnvironment().get(),
+                options.isSecure()
+        );
+
+        this.talkServiceClient = new TalkServiceClient(options.getRapidaEndpointUrl().get(),
+                options.getRapidaApiKey().get(),
+                options.getRapidaRegion().get(),
+                options.getRapidaEnvironment().get(),
+                options.isSecure());
     }
 
 

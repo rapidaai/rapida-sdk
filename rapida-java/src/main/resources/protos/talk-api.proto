@@ -31,12 +31,16 @@ message AssistantConversationMessage {
   google.protobuf.Timestamp updatedDate = 27;
 }
 
+
+message AssistantDefinition {
+  uint64 assistantId = 1 [ jstype = JS_STRING ];
+  string version = 2;
+}
+
 message CreateAssistantMessageRequest {
 
   // assistant parameter
-  uint64 assistantId = 1 [ jstype = JS_STRING ];
-  uint64 assistantProviderModelId = 2 [ jstype = JS_STRING ];
-
+  AssistantDefinition assistant = 1;
   //   actual message
   Message message = 3;
   optional uint64 assistantConversationId = 4 [ jstype = JS_STRING ];
@@ -95,7 +99,7 @@ message AssistantConversation {
 //
 //
 message GetAllAssistantConversationRequest {
-  uint64 assistantId = 1 [ jstype = JS_STRING ];
+  AssistantDefinition assistant = 1;
   Paginate paginate = 2;
   repeated Criteria criterias = 3;
 
@@ -118,7 +122,7 @@ message GetAllAssistantConversationResponse {
 //
 //
 message GetAllConversationMessageRequest {
-  uint64 assistantId = 1 [ jstype = JS_STRING ];
+  AssistantDefinition assistant = 1;
   uint64 assistantConversationId = 2 [ jstype = JS_STRING ];
   Paginate paginate = 3;
   repeated Criteria criterias = 4;

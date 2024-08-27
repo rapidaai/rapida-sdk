@@ -188,6 +188,7 @@ enum Source {
   RAPIDA_APP = 1;
   PYTHON_SDK = 2;
   NODE_SDK = 3;
+  JAVA_SDK = 4;
 }
 
 enum Owner {
