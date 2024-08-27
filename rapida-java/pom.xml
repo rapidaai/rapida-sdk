@@ -31,7 +31,7 @@
     <scm>
         <connection>scm:git:git://github.com/rapidaai/rapida-sdk.git</connection>
         <developerConnection>scm:git:ssh://github.com:rapidaai/rapida-sdk.git</developerConnection>
-        <url>https://github.com/rapidaai/rapida-sdk/rapida-java</url>
+        <url>https://github.com/rapidaai/rapida-sdk</url>
     </scm>
 
     <properties>
@@ -96,16 +96,12 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/rapidaai/${project.artifactId}</url>
+            <url>https://maven.pkg.github.com/rapidaai/rapida-sdk</url>
         </repository>
         <snapshotRepository>
             <id>ossrh</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
     </distributionManagement>
 
     <build>
