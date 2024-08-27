@@ -6,7 +6,7 @@
 
     <groupId>ai.rapida.sdk</groupId>
     <artifactId>rapida-java</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <name>rapida-java</name>
     <description>A Java SDK for integration of rapida</description>
@@ -108,9 +108,6 @@
                     <value>true</value>
                 </property>
             </activation>
-            <properties>
-                <!-- Replace with actual GPG key settings if used -->
-            </properties>
 
             <build>
                 <plugins>
