@@ -44,35 +44,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Import GPG key
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+      - name: Set up GPG key
         run: |
           echo "$GPG_PRIVATE_KEY" | gpg --batch --import
-          gpg --list-secret-keys --keyid-format LONG
-
-      - name: Configure GPG to use loopback mode
-        run: |
           echo "use-agent" >> ~/.gnupg/gpg.conf
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
 
-      - name: Set up JDK 17
+      - name: Configure GPG agent
+        run: |
+          echo "default-cache-ttl 600" >> ~/.gnupg/gpg-agent.conf
+          echo "max-cache-ttl 7200" >> ~/.gnupg/gpg-agent.conf
+          gpgconf --reload gpg-agent
+
+      - name: Export GPG_TTY
+        run: export GPG_TTY=$(tty)
+
+      - name: Set up JDK for Maven Central
         uses: actions/setup-java@v3
         with:
-          distribution: "temurin"
           java-version: "17"
+          distribution: "temurin"
           server-id: ossrh
           server-username: ${{ secrets.OSSRH_USERNAME }}
           server-password: ${{ secrets.OSSRH_PASSWORD }}
 
       - name: Publish to Maven Central
-        run: |
-          mvn --batch-mode deploy -P ossrh -s ./sonatype-settings.xml -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
+        run: mvn --batch-mode deploy -P ossrh -s ./sonatype-settings.xml -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          GPG_TTY: $(tty) # Add this to set GPG_TTY for the session
-        working-directory: rapida-java
+          GPG_TTY: $(tty)
 
       - name: Set up Java for GitHub Packages
         uses: actions/setup-java@v3
