@@ -34,7 +34,15 @@ jobs:
         working-directory: rapida-golang
 
       - name: Build the SDK
-        run: go build -v ./...
+        run: go build -v ./rapida/...
+        working-directory: rapida-golang
+
+      - name: Test the SDK
+        run: go test -v ./rapida/...
+        working-directory: rapida-golang
+
+      - name: Generate Documentation
+        run: go doc -all ./rapida/... > rapida-api-docs.txt
         working-directory: rapida-golang
 
   publish:

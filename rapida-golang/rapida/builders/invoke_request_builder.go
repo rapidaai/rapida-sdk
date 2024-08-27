@@ -43,6 +43,10 @@ type invokeRequestBuilder struct {
 
 type RequestBuilder interface {
 	WithContext(context.Context) RequestBuilder
+	WithInputs(inputs map[string]*any.Any) RequestBuilder
+	WithMetadata(metadata map[string]*any.Any) RequestBuilder
+	WithOptions(options map[string]*any.Any) RequestBuilder
+	Build() (context.Context, rapida_definitions.EndpointDefinition, map[string]*any.Any, map[string]*any.Any, map[string]*any.Any)
 }
 
 func InvokeRequestBuilder(endpoint rapida_definitions.EndpointDefinition) RequestBuilder {
@@ -62,19 +66,19 @@ func (b *invokeRequestBuilder) WithContext(ctx context.Context) RequestBuilder {
 }
 
 // WithInputs sets the inputs parameter
-func (b *invokeRequestBuilder) WithInputs(inputs map[string]*any.Any) *invokeRequestBuilder {
+func (b *invokeRequestBuilder) WithInputs(inputs map[string]*any.Any) RequestBuilder {
 	b.inputs = inputs
 	return b
 }
 
 // WithMetadata sets the metadata parameter
-func (b *invokeRequestBuilder) WithMetadata(metadata map[string]*any.Any) *invokeRequestBuilder {
+func (b *invokeRequestBuilder) WithMetadata(metadata map[string]*any.Any) RequestBuilder {
 	b.metadata = metadata
 	return b
 }
 
 // WithOptions sets the options parameter
-func (b *invokeRequestBuilder) WithOptions(options map[string]*any.Any) *invokeRequestBuilder {
+func (b *invokeRequestBuilder) WithOptions(options map[string]*any.Any) RequestBuilder {
 	b.options = options
 	return b
 }
