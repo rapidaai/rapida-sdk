@@ -83,4 +83,4 @@ jobs:
           GOPROXY="https://proxy.golang.org,direct" \
           go list -m github.com/rapidaai/rapida-sdk@go-v${VERSION}
           go publish .
-        # working-directory: rapida-golang
+        working-directory: rapida-golang
