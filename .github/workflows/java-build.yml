@@ -55,5 +55,5 @@ jobs:
         env:
           USERNAME: ${{ secrets.OSSRH_USERNAME }}
           PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        run: mvn deploy -P release --settings .github/maven-settings.xml
+        run: mvn deploy -P release --settings ./maven-settings.xml
         working-directory: rapida-java
