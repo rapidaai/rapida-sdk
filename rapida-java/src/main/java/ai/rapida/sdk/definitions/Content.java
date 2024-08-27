@@ -24,7 +24,7 @@
  *
  */
 
-package ai.rapida.sdk.utils;
+package ai.rapida.sdk.definitions;
 import ai.rapida.sdk.artifacts.Common;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

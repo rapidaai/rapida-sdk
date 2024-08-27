@@ -23,33 +23,31 @@
  *  Author: Prashant <prashant@rapida.ai>
  *
  */
-package ai.rapida.sdk.utils;
 
-/**
- * @author prashant.srivastav
- */
-public class EndpointDefinition {
-    public long endpoint;
-    public String endpointVersion = "latest";
+package ai.rapida.sdk.definitions;
 
-    public EndpointDefinition(String endpoint) {
+public class AssistantDefinition {
+    public long assistant;
+    public String assistantVersion = "latest";
+
+    public AssistantDefinition(String assistant) {
         try {
-            this.endpoint = Long.parseLong(endpoint);
+            this.assistant = Long.parseLong(assistant);
         } catch (NumberFormatException e) {
         }
     }
 
-    public EndpointDefinition(String endpoint, String endpointVersion) {
+    public AssistantDefinition(String assistant, String assistantVersion) {
         try {
-            this.endpoint = Long.parseLong(endpoint);
+            this.assistant = Long.parseLong(assistant);
         } catch (NumberFormatException e) {
         }
-        this.endpointVersion = endpointVersion;
+        this.assistantVersion = assistantVersion;
     }
 
 
-    public EndpointDefinition(long endpoint, String endpointVersion) {
-        this.endpoint = endpoint;
-        this.endpointVersion = endpointVersion;
+    public AssistantDefinition(long assistant, String assistantVersion) {
+        this.assistant = assistant;
+        this.assistantVersion = assistantVersion;
     }
 }

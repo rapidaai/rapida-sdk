@@ -33,8 +33,8 @@ import ai.rapida.sdk.clients.RapidaBridge;
 import ai.rapida.sdk.execptions.RapidaConfigurationException;
 import ai.rapida.sdk.execptions.RapidaException;
 
-import ai.rapida.sdk.utils.EndpointDefinition;
-import ai.rapida.sdk.utils.InvokeResponseWrapper;
+import ai.rapida.sdk.definitions.EndpointDefinition;
+import ai.rapida.sdk.definitions.InvokeResponseWrapper;
 import com.google.protobuf.Any;
 
 /**

@@ -28,8 +28,8 @@ package ai.rapida.sdk.clients;
 
 import ai.rapida.sdk.RapidaClientOption;
 import ai.rapida.sdk.artifacts.InvokerApi;
-import ai.rapida.sdk.utils.EndpointDefinition;
-import ai.rapida.sdk.utils.InvokeResponseWrapper;
+import ai.rapida.sdk.definitions.EndpointDefinition;
+import ai.rapida.sdk.definitions.InvokeResponseWrapper;
 import com.google.protobuf.Any;
 
 import java.util.Map;

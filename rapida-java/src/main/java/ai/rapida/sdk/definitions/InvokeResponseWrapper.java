@@ -23,7 +23,7 @@
  *  Author: Prashant <prashant@rapida.ai>
  *
  */
-package ai.rapida.sdk.utils;
+package ai.rapida.sdk.definitions;
 import ai.rapida.sdk.artifacts.Common;
 import ai.rapida.sdk.artifacts.InvokerApi;
 import com.fasterxml.jackson.core.JsonProcessingException;

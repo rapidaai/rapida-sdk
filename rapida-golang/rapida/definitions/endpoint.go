@@ -1,7 +1,6 @@
 /*
  *  Copyright (c) 2024. Rapida
  *
- *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
@@ -24,30 +23,48 @@
  *
  */
 
-package ai.rapida.sdk.utils;
+package rapida_definitions
 
-public class AssistantDefinition {
-    public long assistant;
-    public String assistantVersion = "latest";
+import (
+	"errors"
+	"fmt"
+	"strconv"
+)
 
-    public AssistantDefinition(String assistant) {
-        try {
-            this.assistant = Long.parseLong(assistant);
-        } catch (NumberFormatException e) {
-        }
-    }
+type EndpointDefinition interface {
+	GetEndpoint() uint64
+	GetEndpointVersion() string
+}
 
-    public AssistantDefinition(String assistant, String assistantVersion) {
-        try {
-            this.assistant = Long.parseLong(assistant);
-        } catch (NumberFormatException e) {
-        }
-        this.assistantVersion = assistantVersion;
-    }
+type endpointDefinition struct {
+	endpoint        uint64
+	endpointVersion string
+}
 
+func NewEndpoint(endpoint interface{}, endpointVersion string) (EndpointDefinition, error) {
+	var parsedEndpoint uint64
+	switch v := endpoint.(type) {
+	case uint64:
+		parsedEndpoint = v
+	case string:
+		var err error
+		parsedEndpoint, err = strconv.ParseUint(v, 10, 64)
+		if err != nil {
+			return nil, fmt.Errorf("invalid endpoint format: %v", err)
+		}
+	default:
+		return nil, errors.New("unsupported endpoint type: must be uint64 or string")
+	}
+	return &endpointDefinition{
+		endpoint:        parsedEndpoint,
+		endpointVersion: endpointVersion,
+	}, nil
+}
 
-    public AssistantDefinition(long assistant, String assistantVersion) {
-        this.assistant = assistant;
-        this.assistantVersion = assistantVersion;
-    }
+func (ed *endpointDefinition) GetEndpoint() uint64 {
+	return ed.endpoint
+}
+
+func (ed *endpointDefinition) GetEndpointVersion() string {
+	return ed.endpointVersion
 }

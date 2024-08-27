@@ -31,8 +31,8 @@ import ai.rapida.sdk.enums.RapidaRegion;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-
 /**
+
  * @author prashant.srivastav
  */
 public class RapidaClientOption {
