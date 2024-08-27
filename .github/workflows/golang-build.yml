@@ -55,20 +55,29 @@ jobs:
         working-directory: rapida-golang
 
       - name: Authenticate to GitHub Package Registry
-        run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+        run: echo "GITHUB_TOKEN=${{ secrets.GH_TOKEN }}" > ~/.npmrc
 
-      #   - name: Tag version and push tags
-      #     run: |
-      #       VERSION=$(cat rapida-golang/version.txt)
-      #       git tag v${VERSION}
-      #       git push origin v${VERSION}
-      #     working-directory: rapida-golang
+      - name: Tag version and push tags
+        env:
+          GIT_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          VERSION=$(cat rapida-golang/version.txt)
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag go-v${VERSION}
+          git push https://x-access-token:${GIT_AUTH_TOKEN}@github.com/${{ github.repository }} go-v${VERSION}
 
       - name: Configure Go Module Proxy
         run: |
-          go env -w GOPROXY=https://proxy.pkg.github.com/${{ github.repository_owner }}/go
-        working-directory: rapida-golang
+          go env -w GOPROXY=proxy.golang.org
+          working-directory: rapida-golang
 
-      - name: Verify Go module
-        run: go list -m all
+      - name: Publish to GitHub Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          VERSION=$(cat rapida-golang/version.txt)
+          GOPROXY="https://npm.pkg.github.com/${{ github.repository_owner }}" \
+          go list -m github.com/rapidaai/rapida-sdk@go-v${VERSION}
+          go publish ./rapida-golang
         working-directory: rapida-golang

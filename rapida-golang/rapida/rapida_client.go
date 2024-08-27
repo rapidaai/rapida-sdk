@@ -34,12 +34,21 @@ import (
 )
 
 // RapidaClient represents a client for interacting with the Rapida API.
-type RapidaClient struct {
+type rapidaClient struct {
 	rapidaBridge RapidaBridge
 }
 
+type Client interface {
+	Invoke(
+		endpoint rapida_definitions.EndpointDefinition,
+		inputs map[string]*anypb.Any,
+		metadata map[string]*anypb.Any,
+		options map[string]*anypb.Any,
+	) (*rapida_definitions.InvokeResponseWrapper, error)
+}
+
 // NewRapidaClient creates a new instance of RapidaClient with the provided options.
-func NewRapidaClient(options *RapidaClientOption) (*RapidaClient, error) {
+func GetClient(options *RapidaClientOption) (*rapidaClient, error) {
 	if options == nil {
 		options = NewRapidaClientOption()
 	}
@@ -56,13 +65,13 @@ func NewRapidaClient(options *RapidaClientOption) (*RapidaClient, error) {
 	if err != nil {
 		return nil, errors.New("unable to initialize the rapida client")
 	}
-	return &RapidaClient{
+	return &rapidaClient{
 		rapidaBridge: bridge,
 	}, nil
 }
 
 // Invoke calls the Rapida API with the specified parameters.
-func (client *RapidaClient) Invoke(
+func (client *rapidaClient) Invoke(
 	endpoint rapida_definitions.EndpointDefinition,
 	inputs map[string]*anypb.Any,
 	metadata map[string]*anypb.Any,
