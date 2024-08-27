@@ -95,7 +95,40 @@
         </dependency>
 
     </dependencies>
-
+    <profiles>
+        <profile>
+            <id>github</id>
+            <activation>
+                <property>
+                    <name>useGitHubPackages</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <!-- Configuration for GitHub Packages deployment -->
+        </profile>
+        <profile>
+            <id>ossrh</id>
+            <activation>
+                <property>
+                    <name>useOSSRH</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <!-- Configuration for OSSRH deployment -->
+        </profile>
+    </profiles>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/${project.groupId}/${project.artifactId}</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>Central Repository OSSRH</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
     <build>
         <extensions>
             <extension>
@@ -104,8 +137,19 @@
                 <version>1.6.2</version>
             </extension>
         </extensions>
-
         <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.13</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
