@@ -67,7 +67,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git tag go-v${VERSION}
-          git push https://x-access-token:${GIT_AUTH_TOKEN}@github.com/${{ github.repository }} go-v${VERSION}
+          git push https://x-access-token:${GIT_AUTH_TOKEN}o@github.com/rapidaai/rapida-sdk go-v${VERSION}
 
       - name: Configure Go Module Proxy
         run: |
