@@ -51,70 +51,9 @@ jobs:
           java-version: "17"
           cache: maven
 
-      - name: Configure Maven for deployment
+      - name: Publish to Maven Central
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        run: |
-          mkdir -p $HOME/.m2
-          echo "<settings>
-                  <servers>
-                    <server>
-                      <id>github</id>
-                      <username>${{ github.actor }}</username>
-                      <password>${GITHUB_TOKEN}</password>
-                    </server>
-                    <server>
-                      <id>ossrh</id>
-                      <username>${OSSRH_USERNAME}</username>
-                      <password>${OSSRH_PASSWORD}</password>
-                    </server>
-                  </servers>
-                  <profiles>
-                    <profile>
-                      <id>github</id>
-                      <activation>
-                        <activeByDefault>true</activeByDefault>
-                      </activation>
-                      <repositories>
-                        <repository>
-                          <id>github</id>
-                          <url>https://maven.pkg.github.com/${{ github.repository }}</url>
-                          <releases>
-                            <enabled>true</enabled>
-                          </releases>
-                          <snapshots>
-                            <enabled>true</enabled>
-                          </snapshots>
-                        </repository>
-                      </repositories>
-                    </profile>
-                    <profile>
-                      <id>ossrh</id>
-                      <activation>
-                        <activeByDefault>true</activeByDefault>
-                      </activation>
-                      <repositories>
-                        <repository>
-                          <id>ossrh</id>
-                          <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-                          <releases>
-                            <enabled>true</enabled>
-                          </releases>
-                          <snapshots>
-                            <enabled>true</enabled>
-                          </snapshots>
-                        </repository>
-                      </repositories>
-                    </profile>
-                  </profiles>
-                  <activeProfiles>
-                    <activeProfile>github</activeProfile>
-                    <activeProfile>ossrh</activeProfile>
-                  </activeProfiles>
-                </settings>" > $HOME/.m2/settings.xml
-
-      - name: Deploy to GitHub Packages and OSSRH
-        run: mvn clean deploy -DskipTests -Pgithub,ossrh -X
+          USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+        run: mvn deploy -P release --settings .github/maven-settings.xml
         working-directory: rapida-java
