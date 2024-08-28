@@ -57,7 +57,7 @@ jobs:
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "Maven project version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_ENV
-
+        working-directory: rapida-java
       - name: Create Git tag
         run: |
           echo "Creating Git tag for version ${{ env.version }}"
@@ -65,6 +65,7 @@ jobs:
           git config user.email "actions@github.com"
           git tag -a "v${{ env.version }}-java" -m "Release version ${{ env.version }}-java"
           git push origin "v${{ env.version }}-java"
+        working-directory: rapida-java
 
   publish-github:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
@@ -75,21 +76,15 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Maven Central Repository
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
-          java-version: "17"
+          java-version: "11"
           distribution: "temurin"
-          cache: maven
-          server-id: github
-          server-username: ${{ secrets.GITHUB_ACTOR }}
-          server-password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish to GitHub Packages
+      - name: Publish package
         run: mvn -P github --batch-mode deploy -DskipTests
+        working-directory: rapida-java
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: rapida-java
 
   publish-ossrh:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
