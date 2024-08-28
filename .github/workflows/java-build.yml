@@ -43,38 +43,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      #   - name: Set up GPG key
-      #     run: |
-      #       echo "$GPG_PRIVATE_KEY" | gpg --batch --import
-      #       echo "use-agent" >> ~/.gnupg/gpg.conf
-      #       echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-
-      #   - name: Configure GPG agent
-      #     run: |
-      #       echo "default-cache-ttl 600" >> ~/.gnupg/gpg-agent.conf
-      #       echo "max-cache-ttl 7200" >> ~/.gnupg/gpg-agent.conf
-      #       gpgconf --reload gpg-agent
-
-      #   - name: Export GPG_TTY
-      #     run: export GPG_TTY=$(tty)
-
-      #   - name: Set up JDK for Maven Central
-      #     uses: actions/setup-java@v3
-      #     with:
-      #       java-version: "17"
-      #       distribution: "temurin"
-      #       server-id: ossrh
-      #       server-username: ${{ secrets.OSSRH_USERNAME }}
-      #       server-password: ${{ secrets.OSSRH_PASSWORD }}
-
-      #   - name: Publish to Maven Central
-      #     run: mvn --batch-mode deploy -P ossrh -s ./sonatype-settings.xml -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
-      #     env:
-      #       MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-      #       MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-      #       GPG_TTY: $(tty)
-
       - name: Set up Java for GitHub Packages
         uses: actions/setup-java@v3
         with:
@@ -90,3 +58,25 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: rapida-java
+
+  publish:
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          server-id: central
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Publish package
+        run: mvn -P ossrh --batch-mode deploy -DskipTests
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
