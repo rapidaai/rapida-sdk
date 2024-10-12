@@ -19,44 +19,29 @@
 #  THE SOFTWARE.
 #
 #  Author: Prashant <prashant@rapida.ai>
+from enum import Enum
+import warnings
 
 
-from rapida.rapida_client import (
-    RapidaClient,
-    RapidaEndpointClient,
-    RapidaAssistantClient,
-    RapidaGatewayClient,
-)
-from rapida.rapida_client_options import (
-    RapidaClientOptions,
-)
-from rapida.rapida_environment import RapidaEnvironment
-from rapida.rapida_region import RapidaRegion
-from rapida.rapida_source import RapidaSource
-from rapida.exceptions import (
-    RapidaException,
-    RapidaInternalServerException,
-    RapidaInvalidAPIException,
-    RapidaConfigurationException,
-)
-from rapida.version import VERSION
-from rapida.client.response_wrapper import Message, Content, ToolDefinition
+class RapidaEnvironment(Enum):
+    """
+    Rapida Environment
+    """
 
-__all__ = [
-    "RapidaClient",
-    "ToolDefinition",
-    "RapidaEndpointClient",
-    "RapidaAssistantClient",
-    "RapidaGatewayClient",
-    "RapidaClientOptions",
-    "RapidaException",
-    "RapidaInternalServerException",
-    "RapidaInvalidAPIException",
-    "RapidaConfigurationException",
-    "VERSION",
-    "RapidaEnvironment",
-    "RapidaRegion",
-    "RapidaSource",
-    "Message",
-    "Content",
-]
+    PRODUCTION = "production"
+    DEVELOPMENT = "development"
+
+    def get(self) -> str:
+        return str(self.value)
+
+    @staticmethod
+    def from_str(label):
+        if label == "production":
+            return RapidaEnvironment.PRODUCTION
+        elif label == "development":
+            return RapidaEnvironment.DEVELOPMENT
+        else:
+            warnings.warn(
+                "the environment is not supported only use production and development."
+            )
+            return RapidaEnvironment.DEVELOPMENT

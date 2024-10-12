@@ -78,3 +78,6 @@ target/
 
 #dev requirment files
 requirements-dev.txt
+
+# don't push the proto
+*.proto

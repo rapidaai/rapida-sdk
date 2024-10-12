@@ -21,42 +21,33 @@
 #  Author: Prashant <prashant@rapida.ai>
 
 
-from rapida.rapida_client import (
-    RapidaClient,
-    RapidaEndpointClient,
-    RapidaAssistantClient,
-    RapidaGatewayClient,
-)
-from rapida.rapida_client_options import (
-    RapidaClientOptions,
-)
-from rapida.rapida_environment import RapidaEnvironment
-from rapida.rapida_region import RapidaRegion
-from rapida.rapida_source import RapidaSource
-from rapida.exceptions import (
-    RapidaException,
-    RapidaInternalServerException,
-    RapidaInvalidAPIException,
-    RapidaConfigurationException,
-)
-from rapida.version import VERSION
-from rapida.client.response_wrapper import Message, Content, ToolDefinition
+from enum import Enum
+import warnings
 
-__all__ = [
-    "RapidaClient",
-    "ToolDefinition",
-    "RapidaEndpointClient",
-    "RapidaAssistantClient",
-    "RapidaGatewayClient",
-    "RapidaClientOptions",
-    "RapidaException",
-    "RapidaInternalServerException",
-    "RapidaInvalidAPIException",
-    "RapidaConfigurationException",
-    "VERSION",
-    "RapidaEnvironment",
-    "RapidaRegion",
-    "RapidaSource",
-    "Message",
-    "Content",
-]
+
+class RapidaRegion(Enum):
+    """
+    Region supported by rapida service
+    """
+
+    AP = "ap"
+    US = "us"
+    EU = "eu"
+    ALL = "all"
+
+    def get(self) -> str:
+        return str(self.value)
+
+    @staticmethod
+    def from_str(label):
+        if label == "ap":
+            return RapidaRegion.AP
+        elif label == "us":
+            return RapidaRegion.US
+        elif label == "eu":
+            return RapidaRegion.EU
+        else:
+            warnings.warn(
+                "the region is not support, supported region ap, us, eu and all"
+            )
+            return RapidaRegion.ALL

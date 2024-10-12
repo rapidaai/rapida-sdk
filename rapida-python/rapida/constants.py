@@ -21,42 +21,13 @@
 #  Author: Prashant <prashant@rapida.ai>
 
 
-from rapida.rapida_client import (
-    RapidaClient,
-    RapidaEndpointClient,
-    RapidaAssistantClient,
-    RapidaGatewayClient,
-)
-from rapida.rapida_client_options import (
-    RapidaClientOptions,
-)
-from rapida.rapida_environment import RapidaEnvironment
-from rapida.rapida_region import RapidaRegion
-from rapida.rapida_source import RapidaSource
-from rapida.exceptions import (
-    RapidaException,
-    RapidaInternalServerException,
-    RapidaInvalidAPIException,
-    RapidaConfigurationException,
-)
-from rapida.version import VERSION
-from rapida.client.response_wrapper import Message, Content, ToolDefinition
+HEADER_API_KEY = "x-api-key"
+HEADER_AUTH_KEY = "x-auth-id"
+HEADER_SOURCE_KEY = "x-client-source"
+HEADER_ENVIRONMENT_KEY = "x-rapida-environment"
+HEADER_REGION_KEY = "x-rapida-region"
 
-__all__ = [
-    "RapidaClient",
-    "ToolDefinition",
-    "RapidaEndpointClient",
-    "RapidaAssistantClient",
-    "RapidaGatewayClient",
-    "RapidaClientOptions",
-    "RapidaException",
-    "RapidaInternalServerException",
-    "RapidaInvalidAPIException",
-    "RapidaConfigurationException",
-    "VERSION",
-    "RapidaEnvironment",
-    "RapidaRegion",
-    "RapidaSource",
-    "Message",
-    "Content",
-]
+
+ENDPOINT_URL = "connect.rapida.ai"
+ASSISTANT_URL = "assistant-01.rapida.ai"
+GATEWAY_URL = "gateway-01.rapida.ai"

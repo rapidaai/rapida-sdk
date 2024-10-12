@@ -1,0 +1,3 @@
+[submodule "rapida-python/rapida/artifacts/protos"]
+	path = rapida-python/rapida/artifacts/protos
+	url = git@github.com:lexatic/internal-bridge.git

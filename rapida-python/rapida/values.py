@@ -1,11 +1,35 @@
-"""
-author: prashant.srivastav
-"""
+#  Copyright (c) 2024. Rapida
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in
+#  all copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+#  THE SOFTWARE.
+#
+#  Author: Prashant <prashant@rapida.ai>
+
 import mimetypes
 import re
 
 from google.protobuf.any_pb2 import Any
-from google.protobuf.wrappers_pb2 import StringValue as _StringValue, BytesValue, Int32Value, FloatValue
+from google.protobuf.wrappers_pb2 import (
+    StringValue as _StringValue,
+    BytesValue,
+    Int32Value,
+    FloatValue,
+)
 import os
 from PIL import Image
 
@@ -96,19 +120,19 @@ def FileValue(file_path: str) -> Any:
 
 def AudioValue(file_path: str) -> Any:
     """
-        Convert an audio file to a proto.Any message.
+    Convert an audio file to a proto.Any message.
 
-        Args:
-            file_path (str): Path to the audio file.
+    Args:
+        file_path (str): Path to the audio file.
 
-        Returns:
-            any_pb2.Any: Packed proto.Any message containing the audio data.
+    Returns:
+        any_pb2.Any: Packed proto.Any message containing the audio data.
 
-        Raises:
-            FileNotFoundError: If the file does not exist.
-            IOError: If an error occurs while reading the file.
-            ValueError: If the file is empty or an error occurs while packing.
-        """
+    Raises:
+        FileNotFoundError: If the file does not exist.
+        IOError: If an error occurs while reading the file.
+        ValueError: If the file is empty or an error occurs while packing.
+    """
     if not os.path.isfile(file_path):
         raise RapidaException(
             code=400,
@@ -118,7 +142,7 @@ def AudioValue(file_path: str) -> Any:
 
         # Check file type
     mime_type, _ = mimetypes.guess_type(file_path)
-    if not mime_type or not mime_type.startswith('audio'):
+    if not mime_type or not mime_type.startswith("audio"):
         raise RapidaException(
             code=400,
             message="The file is not a valid audio file.",
@@ -212,7 +236,6 @@ def ImageValue(file_path: str) -> Any:
             code=400,
             message=f"Error packing the file data: {e}",
             source="local",
-
         )
 
 
@@ -234,7 +257,6 @@ def NumberValue(number: float) -> Any:
             code=400,
             message="The number must be an integer or a float.",
             source="local",
-
         )
 
     # Use Int32Value for integers or FloatValue for floating-point numbers
@@ -247,7 +269,6 @@ def NumberValue(number: float) -> Any:
             code=400,
             message="Unsupported number type.",
             source="local",
-
         )
     # Create an Any message and pack the number value into it
     any_message = Any()
@@ -271,13 +292,15 @@ def URLValue(url: str) -> Any:
     """
     # Validate the URL
     url_pattern = re.compile(
-        r'^(?:http|ftp)s?://'  # http:// or https://
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
-        r'localhost|'  # localhost...
-        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'  # ...or ipv4
-        r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'  # ...or ipv6
-        r'(?::\d+)?'  # optional port
-        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+        r"^(?:http|ftp)s?://"  # http:// or https://
+        r"(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|"  # domain...
+        r"localhost|"  # localhost...
+        r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|"  # ...or ipv4
+        r"\[?[A-F0-9]*:[A-F0-9:]+\]?)"  # ...or ipv6
+        r"(?::\d+)?"  # optional port
+        r"(?:/?|[/?]\S+)$",
+        re.IGNORECASE,
+    )
 
     if not re.match(url_pattern, url):
         raise RapidaException(
